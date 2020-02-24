@@ -225,7 +225,7 @@
   
   
   <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/断路器模式/">
+    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/what-is-事务/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郝文璇">
@@ -239,7 +239,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
             
-            <a href="/断路器模式/" class="post-title-link" itemprop="url">断路器模式</a>
+            <a href="/what-is-事务/" class="post-title-link" itemprop="url">what is 事务</a>
           
         </h1>
 
@@ -254,19 +254,11 @@
                 
               
 
-              <time title="Created: 2019-12-22 23:34:05" itemprop="dateCreated datePublished" datetime="2019-12-22T23:34:05+08:00">2019-12-22</time>
+              <time title="Created: 2020-02-24 19:41:35 / Modified: 19:44:43" itemprop="dateCreated datePublished" datetime="2020-02-24T19:41:35+08:00">2020-02-24</time>
             </span>
           
             
 
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-12-23 12:09:23" itemprop="dateModified" datetime="2019-12-23T12:09:23+08:00">2019-12-23</time>
-              </span>
             
           
             <span class="post-meta-item">
@@ -275,7 +267,7 @@
               </span>
               <span class="post-meta-item-text">In</span>
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/设计模式/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/基础原理/" itemprop="url" rel="index"><span itemprop="name">基础原理</span></a></span>
 
                 
                 
@@ -294,16 +286,935 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>在分布式环境下，特别是微服务结构的分布式系统中， 一个软件系统调用另外一个远程系统是非常普遍的。这种远程调用的被调用方可能是另外一个进程，或者是跨网路的另外一台主机, 这种远程的调用和进程的内部调用最大的区别是，远程调用可能会失败，或者挂起而没有任何回应，直到超时。更坏的情况是， 如果有多个调用者对同一个挂起的服务进行调用，那么就很有可能的是一个服务的超时等待迅速蔓延到整个分布式系统，引起连锁反应， 从而消耗掉整个分布式系统大量资源。最终可能导致系统瘫痪。</p>
-<p>断路器（Circuit Breaker）模式就是为了防止在分布式系统中出现这种瀑布似的连锁反应导致的灾难。</p>
-<p>一旦某个电器出问题，为了防止灾难，电路的保险丝就会熔断。断路器类似于电路的保险丝， 实现思路非常简单，可以将需要保护的远程服务嗲用封装起来，在内部监听失败次数， 一旦失败次数达到某阀值后，所有后续对该服务的调用，断路器截获后都直接返回错误到调用方，而不会继续调用已经出问题的服务， 从而达到保护调用方的目的, 整个系统也就不会出现因为超时而产生的瀑布式连锁反应。</p>
-<h3 id="基本模式"><a href="#基本模式" class="headerlink" title="基本模式"></a>基本模式</h3><p>当supplier可用时, 断路器会直接返回调用结果给client端; 多次重试后达到重试阈值, 断路器会从close模式转为open模式, 再次调用相同的服务, 断路器会直接返回错误.</p>
-<p><img src="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j1tljdaj30fi0oitb7.jpg" alt></p>
-<h3 id="扩展模式"><a href="#扩展模式" class="headerlink" title="扩展模式"></a>扩展模式</h3><p>基本的断路器模式下，保证了断路器在open状态时，保护supplier不会被调用， 但我们还需要额外的措施可以在supplier恢复服务后，可以重置断路器。一种可行的办法是断路器定期探测supplier的服务是否恢复， 一但恢复， 就将状态设置成close。断路器进行重试时的状态为半开（half-open）状态。<br><img src="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j2e5djbj30ci0bajrv.jpg" alt></p>
-<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><p>一个supplier一般很稳定，如果一旦故障发生后， 检查和恢复需要的时间比较长，通常无法短时间内快速修复的，那么这种服务比较适合采用断路器模式。否则很可能导致ping-pong效应。</p>
-<h3 id="不适用场景"><a href="#不适用场景" class="headerlink" title="不适用场景"></a>不适用场景</h3><p>为了防止一个应用程序试图调用一个远程服务或访问共享资源，如果​​该操作是极有可能失败， 这种模式可能不适合。 </p>
-<p>对于处理中的应用程序访问本地专用资源，例如在存储器内数据结构。在这种环境下通常也不适合，使用断路器只会增加系统开销。 </p>
-<h3 id="golang版实现"><a href="#golang版实现" class="headerlink" title="golang版实现"></a>golang版实现</h3>
+          <h1 id="事务特性-ACID"><a href="#事务特性-ACID" class="headerlink" title="事务特性:ACID"></a>事务特性:ACID</h1><h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><p>数据库管理系统中事务(transaction)的四个特性（分析时根据首字母缩写依次解释）：原子性（Atomicity）、一致性（Consistency）、隔离性（Isolation）、持久性（Durability）</p><p>所谓事务，它是一个操作序列，这些操作要么都执行，要么都不执行，它是一个不可分割的工作单位。（执行单个逻辑功能的一组指令或操作称为事务）</p><h4 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h4><p>指事务是一个不可再分割的工作单元，事务中的操作要么都发生，要么都不发生。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/what-is-事务/" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/乐观锁and悲观锁/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郝文璇">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/kevin.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sparkle">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/乐观锁and悲观锁/" class="post-title-link" itemprop="url">乐观锁and悲观锁</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2020-02-24 19:41:07 / Modified: 19:44:46" itemprop="dateCreated datePublished" datetime="2020-02-24T19:41:07+08:00">2020-02-24</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/基础原理/" itemprop="url" rel="index"><span itemprop="name">基础原理</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>乐观锁和悲观锁, 是并发控制了两种手段, 是一种思想. </p>
+</blockquote><h2 id="悲观锁（Pessimistic-Lock）"><a href="#悲观锁（Pessimistic-Lock）" class="headerlink" title="悲观锁（Pessimistic Lock）"></a>悲观锁（Pessimistic Lock）</h2><p>在修改数据之前先锁定, 再修改.  </p><p>之所以叫做悲观锁，是因为这是一种对数据的修改抱有悲观态度的并发控制方式。我们一般认为数据被并发修改的概率比较大，所以需要在修改之前先加锁。</p><p>悲观锁的实现，往往依靠数据库提供的锁机制</p><h4 id="共享锁-排它锁"><a href="#共享锁-排它锁" class="headerlink" title="共享锁/排它锁"></a>共享锁/排它锁</h4><p>悲观锁又可以分为共享锁和排它锁 </p><ul>
+<li>共享锁(读锁): 多个事务对于同一数据可以共享一把锁，都能访问到数据，但是只能读不能修改。 </li>
+<li>排它锁(写锁): 如果一个事务获取了一个数据行的排他锁，其他事务就不能再获取该行的其他锁，包括共享锁和排他锁，但是获取排他锁的事务是可以对数据行读取和修改。</li>
+</ul>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/乐观锁and悲观锁/" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/mysql-索引/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郝文璇">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/kevin.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sparkle">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/mysql-索引/" class="post-title-link" itemprop="url">mysql---索引</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2020-02-24 19:34:58 / Modified: 19:40:35" itemprop="dateCreated datePublished" datetime="2020-02-24T19:34:58+08:00">2020-02-24</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="常见索引模型"><a href="#常见索引模型" class="headerlink" title="常见索引模型"></a>常见索引模型</h2><ul>
+<li>哈希表<br>  适用于只有等值查询的场景，比如 Memcached 及其他一些 NoSQL 引擎。</li>
+<li>有序数组<br>  适用于静态存储引擎; 等值查询和范围查询效率都很高, 但是更新效率低. </li>
+<li>搜索树<ul>
+<li>二叉搜索树<br>查询和更新都是O(logn)</li>
+<li>N叉数<br>适配磁盘的访问模式, N取决于数据块的大小<h2 id="InnoDB索引"><a href="#InnoDB索引" class="headerlink" title="InnoDB索引"></a>InnoDB索引</h2>在 InnoDB 中，表都是根据主键顺序以索引的形式存放的，这种存储方式的表称为索引组织表。所以可以理解为 <strong>每一个表是好几棵B+树, 新建索引就是新建一颗B+数</strong><h4 id="主键索引-聚簇索引"><a href="#主键索引-聚簇索引" class="headerlink" title="主键索引/聚簇索引"></a>主键索引/聚簇索引</h4>叶子节点存储的是整行数据<h5 id="自增主键"><a href="#自增主键" class="headerlink" title="自增主键"></a>自增主键</h5>自增主键是指自增列上定义的主键，在建表语句中一般是这么定义的： NOT NULL PRIMARY KEY AUTO_INCREMENT  </li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/mysql-索引/" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/mysql-事务/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郝文璇">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/kevin.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sparkle">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/mysql-事务/" class="post-title-link" itemprop="url">mysql---事务</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2020-02-24 19:34:48 / Modified: 19:40:34" itemprop="dateCreated datePublished" datetime="2020-02-24T19:34:48+08:00">2020-02-24</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>事务就是要保证一组数据库操作，要么全部成功，要么全部失败。在 MySQL 中，事务支持是在引擎层实现的。而MyISAM 引擎就不支持事务.</p>
+</blockquote><h2 id="事物操作"><a href="#事物操作" class="headerlink" title="事物操作"></a>事物操作</h2><ul>
+<li><p>显示启动</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">begin / start transaction</span><br><span class="line">rollback</span><br><span class="line">commit </span><br><span class="line">commit work and chain  // 提交事务后自动启动下一个事务, 省去了再次被begin的开销; 适用于频繁使用事务的业务</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置启动</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set autocommit=0</span><br></pre></td></tr></table></figure>
+
+<p>  注意: 这种方法下, 任何语句都会开启事务, 直到显示commit / rollback</p>
+</li>
+<li><p>查询系统长事务  </p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 查询时间超过60s的长事务</span><br><span class="line">select * from information_schema.innodb_trx where TIME_TO_SEC(timediff(now(),trx_started))&gt;60</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查询事务隔离级别</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show variables like &apos;transaction_isolation&apos;;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/mysql-事务/" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/redis-高可用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郝文璇">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/kevin.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sparkle">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/redis-高可用/" class="post-title-link" itemprop="url">redis---高可用</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2020-02-24 19:30:11 / Modified: 19:40:30" itemprop="dateCreated datePublished" datetime="2020-02-24T19:30:11+08:00">2020-02-24</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><h4 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h4><p>复制是高可用 Redis 的基础，哨兵 和 集群 都是在 复制基础 上实现高可用的。复制主要实现了<code>数据的多机备份</code>以及对于<code>读操作的负载均衡</code></p>
+<p>缺点: 故障恢复无法自动化、写操作无法负载均衡、存储能力受到单机的限制</p>
+<h4 id="哨兵"><a href="#哨兵" class="headerlink" title="哨兵"></a>哨兵</h4><p>在复制的基础上，哨兵实现了 <strong>自动化故障恢复</strong></p>
+<p>缺点: 写操作无法负载均衡、存储能力受到单机的限制</p>
+<h4 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h4><p>解决了 写操作无法负载均衡、存储能力受到单机的限制</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/redis-高可用/" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/redis-事务/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郝文璇">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/kevin.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sparkle">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/redis-事务/" class="post-title-link" itemprop="url">redis---事务</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2020-02-24 19:30:02 / Modified: 19:40:31" itemprop="dateCreated datePublished" datetime="2020-02-24T19:30:02+08:00">2020-02-24</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>为了保证原子性, redis提供了简单的事务. 但不支持事务回滚</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">multi 开始事务, 之后输入命令, 会放入队列而不是真正的执行</span><br><span class="line">discard 停止事务</span><br><span class="line">exec 执行事务, 真正执行命令</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/redis-事务/" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/redis-队列/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郝文璇">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/kevin.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sparkle">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/redis-队列/" class="post-title-link" itemprop="url">redis---队列</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2020-02-24 19:29:35 / Modified: 19:40:33" itemprop="dateCreated datePublished" datetime="2020-02-24T19:29:35+08:00">2020-02-24</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h1><blockquote>
+<p>注意, 如果对消息的可靠性有极致追求, 则不建议使用redis作为队列   </p>
+</blockquote>
+<p>直接用redis的list结构来实现, 生产者 <code>rpush</code>, 消费者 <code>lpop</code></p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/redis-队列/" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/redis-分布式锁/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郝文璇">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/kevin.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sparkle">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/redis-分布式锁/" class="post-title-link" itemprop="url">redis---分布式锁</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2020-02-24 19:29:29 / Modified: 19:40:32" itemprop="dateCreated datePublished" datetime="2020-02-24T19:29:29+08:00">2020-02-24</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h1><p>利用setnx, key若存在, 则创建失败的特性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">setnx lock true</span><br><span class="line">del lock</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/redis-分布式锁/" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/网络相关的linux命令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郝文璇">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/kevin.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sparkle">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/网络相关的linux命令/" class="post-title-link" itemprop="url">网络相关的linux命令</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2020-02-12 22:45:29" itemprop="dateCreated datePublished" datetime="2020-02-12T22:45:29+08:00">2020-02-12</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-15 18:05:04" itemprop="dateModified" datetime="2020-02-15T18:05:04+08:00">2020-02-15</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="端口相关的命令"><a href="#端口相关的命令" class="headerlink" title="端口相关的命令"></a>端口相关的命令</h2><h3 id="查看对方端口是否打开"><a href="#查看对方端口是否打开" class="headerlink" title="查看对方端口是否打开"></a>查看对方端口是否打开</h3><ul>
+<li>telnet ip port</li>
+<li>nc -v ip port</li>
+</ul>
+<h3 id="查看端口被什么进程占用"><a href="#查看端口被什么进程占用" class="headerlink" title="查看端口被什么进程占用"></a>查看端口被什么进程占用</h3><ul>
+<li><p>netstat -ap | grep :prot<br><img src="https://tva1.sinaimg.cn/large/0082zybply1gbu09woe8kj30ox0cr0ut.jpg" alt="netstat">  </p>
+<blockquote>
+<p>netstat是基于Netstat这个命令行工具的指令，它可以用来查询系统上的网络套接字连接情况，包括tcp,udp以及Unix套接字；另外它还能列出路由表，接口状态和多播成员等信息。</p>
+</blockquote>
+</li>
+<li><p>lsof -n -P -i:port</p>
+<blockquote>
+<p>lsof(list open files)是一个列出当前系统打开文件的工具。在linux环境下，任何事物都以文件的形式存在，通过文件不仅仅可以访问常规数据，还可以访问网络连接和硬件。所以如传输控制协议 (TCP) 和用户数据报协议 (UDP) 套接字等，系统在后台都为该应用程序分配了一个文件描述符，无论这个文件的本质如何，该文件描述符为应用程序与基础操作系统之间的交互提供了通用接口。因为应用程序打开文件的描述符列表提供了大量关于这个应用程序本身的信息，因此通过lsof工具能够查看这个列表对系统监测以及排错将是很有帮助的。</p>
+</blockquote>
+<ul>
+<li>-n 不将ip解析为域名</li>
+<li>-P 不将port解析为service name</li>
+<li>-i:port 指定端口</li>
+</ul>
+</li>
+</ul>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/exec命令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郝文璇">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/kevin.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sparkle">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/exec命令/" class="post-title-link" itemprop="url">exec命令</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-12-31 10:56:02" itemprop="dateCreated datePublished" datetime="2019-12-31T10:56:02+08:00">2019-12-31</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-09 16:02:33" itemprop="dateModified" datetime="2020-02-09T16:02:33+08:00">2020-02-09</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h2><p>exec共有三种用法   </p>
+<ol>
+<li>执行程序  </li>
+<li>文件重定向 </li>
+<li>当做find命令的一个选项
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/exec命令/" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
@@ -325,6 +1236,9 @@
   </div>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
 
 
           </div>
@@ -371,7 +1285,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -384,7 +1298,7 @@
             <a href="/categories/">
           
         
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">categories</span>
         </a>
       </div>
@@ -397,7 +1311,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">tags</span>
         </a>
       </div>
@@ -418,7 +1332,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="消息队列 注意, 如果对消息的可靠性有极致追求, 则不建议使用redis作为队列     直接用redis的list结构来实现, 生产者 rpush, 消费者 lpop">
+<meta name="keywords" content="redis,消息队列,延迟队列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis---队列">
+<meta property="og:url" content="https://wenxuan-hao.github.io/redis-队列/index.html">
+<meta property="og:site_name" content="Sparkle">
+<meta property="og:description" content="消息队列 注意, 如果对消息的可靠性有极致追求, 则不建议使用redis作为队列     直接用redis的list结构来实现, 生产者 rpush, 消费者 lpop">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-02-24T11:40:33.650Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="redis---队列">
+<meta name="twitter:description" content="消息队列 注意, 如果对消息的可靠性有极致追求, 则不建议使用redis作为队列     直接用redis的list结构来实现, 生产者 rpush, 消费者 lpop">
+  <link rel="canonical" href="https://wenxuan-hao.github.io/redis-队列/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>redis---队列 | Sparkle</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sparkle</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">code and life</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/redis-队列/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郝文璇">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/kevin.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sparkle">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">redis---队列
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2020-02-24 19:29:35 / Modified: 19:40:33" itemprop="dateCreated datePublished" datetime="2020-02-24T19:29:35+08:00">2020-02-24</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h1><blockquote>
+<p>注意, 如果对消息的可靠性有极致追求, 则不建议使用redis作为队列   </p>
+</blockquote>
+<p>直接用redis的list结构来实现, 生产者 <code>rpush</code>, 消费者 <code>lpop</code></p>
+<a id="more"></a>
+<h3 id="问题1-空队列"><a href="#问题1-空队列" class="headerlink" title="问题1: 空队列"></a>问题1: 空队列</h3><p>如果队列为空, 消费者还一直空轮训, 会拉高客户端cpu, 以及redis的QPS.  </p>
+<h4 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h4><ol>
+<li>sleep()解决, 但是会导致消息的延迟增大</li>
+<li><code>blpop</code> 阻塞读. 一旦数据准备好, 就会立刻醒来, 消息延迟几乎为0  </li>
+</ol>
+<h3 id="问题2-空连接自动断开"><a href="#问题2-空连接自动断开" class="headerlink" title="问题2: 空连接自动断开"></a>问题2: 空连接自动断开</h3><p>使用 <code>blpop</code> 时, 若消息一直没有准备好, redis的客户端连接会变成闲置连接. 闲置时间过久, 服务器会自动断开连接, 这时blpop就会抛出异常</p>
+<h4 id="解决-1"><a href="#解决-1" class="headerlink" title="解决"></a>解决</h4><p>捕获异常, 并重试</p>
+<h2 id="延时队列"><a href="#延时队列" class="headerlink" title="延时队列"></a>延时队列</h2><p>带有延时功能的消息队列<br>场景案例: 用户下单30分钟后未付款, 自动关闭订单</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>使用zset, score为到期处理的时间, value为序列化的消息. 多线程轮询zset获取到期任务进行处理. 多线程是可用性保障, 为了防止一个线程挂了还有其他的线程可以处理. 因为多线程抢占, 所以还要考虑一个并发性问题, 保证消息不能被处理多次, 这里采用zrem, 因为一个值只能被删除一次.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line">package redis;</span><br><span class="line"></span><br><span class="line">import java.lang.reflect.Type;</span><br><span class="line">import java.util.Set;</span><br><span class="line">import java.util.UUID;</span><br><span class="line"></span><br><span class="line">import com.alibaba.fastjson.JSON;</span><br><span class="line">import com.alibaba.fastjson.TypeReference;</span><br><span class="line"></span><br><span class="line">import redis.clients.jedis.Jedis;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @Author wenxuan.hao</span><br><span class="line"> * @create 2020-02-13 22:03</span><br><span class="line"> */</span><br><span class="line">public class RedisDelayingQueue&lt;T&gt; &#123;</span><br><span class="line">    static class TaskItem&lt;T&gt; &#123;</span><br><span class="line">        public String id;</span><br><span class="line">        public T msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // fastjson 序列化对象中存在 generic 类型时，需要使用 TypeReference</span><br><span class="line">    private Type TaskType = new TypeReference&lt;TaskItem&lt;T&gt;&gt;()&#123;&#125;.getType();</span><br><span class="line"></span><br><span class="line">    private Jedis jedis;</span><br><span class="line">    private String queueKey;</span><br><span class="line"></span><br><span class="line">    public RedisDelayingQueue(Jedis jedis, String queueKey) &#123;</span><br><span class="line">        this.jedis = jedis;</span><br><span class="line">        this.queueKey = queueKey;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void delay(T msg) &#123;</span><br><span class="line">        TaskItem&lt;T&gt; task = new TaskItem&lt;T&gt;();</span><br><span class="line">        task.id = UUID.randomUUID().toString(); // 分配唯一的 uuid</span><br><span class="line">        task.msg = msg;</span><br><span class="line">        String s = JSON.toJSONString(task); // fastjson 序列化</span><br><span class="line">        jedis.zadd(queueKey, System.currentTimeMillis() + 5000, s); // 塞入延时队列 ,5s 后再试</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void loop() &#123;</span><br><span class="line">        while (!Thread.interrupted()) &#123;</span><br><span class="line">            // 只取一条</span><br><span class="line">            Set&lt;String&gt; values = jedis.zrangeByScore(queueKey, 0, System.currentTimeMillis(), 0, 1);</span><br><span class="line">            // 没取到</span><br><span class="line">            if (values.isEmpty()) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    Thread.sleep(500); // 歇会继续</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            // 取到了</span><br><span class="line">            String s = values.iterator().next();</span><br><span class="line">            if (jedis.zrem(queueKey, s) &gt; 0) &#123; // 防止一条数据被处理多次, 因为只能成功删除一次</span><br><span class="line">                TaskItem&lt;T&gt; task = JSON.parseObject(s, TaskType); // fastjson 反序列化</span><br><span class="line">                this.handleMsg(task.msg);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void handleMsg(T msg) &#123;</span><br><span class="line">        System.out.println(msg);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Jedis jedis = new Jedis();</span><br><span class="line">        RedisDelayingQueue&lt;String&gt; queue = new RedisDelayingQueue&lt;&gt;(jedis, &quot;q-demo&quot;);</span><br><span class="line"></span><br><span class="line">        Thread producer = new Thread() &#123;</span><br><span class="line"></span><br><span class="line">            public void run() &#123;</span><br><span class="line">                for (int i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">                    queue.delay(&quot;codehole&quot; + i);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;;</span><br><span class="line">        Thread consumer = new Thread() &#123;</span><br><span class="line"></span><br><span class="line">            public void run() &#123;</span><br><span class="line">                queue.loop();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        producer.start();</span><br><span class="line">        consumer.start();</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            producer.join();</span><br><span class="line">            Thread.sleep(6000);</span><br><span class="line">            consumer.interrupt();</span><br><span class="line">            consumer.join();</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/redis/" rel="tag"># redis</a>
+            
+              <a href="/tags/消息队列/" rel="tag"># 消息队列</a>
+            
+              <a href="/tags/延迟队列/" rel="tag"># 延迟队列</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/redis-分布式锁/" rel="next" title="redis---分布式锁">
+                  <i class="fa fa-chevron-left"></i> redis---分布式锁
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/redis-事务/" rel="prev" title="redis---事务">
+                  redis---事务 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#消息队列"><span class="nav-number">1.</span> <span class="nav-text">消息队列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题1-空队列"><span class="nav-number">1.0.1.</span> <span class="nav-text">问题1: 空队列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题2-空连接自动断开"><span class="nav-number">1.0.2.</span> <span class="nav-text">问题2: 空连接自动断开</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#延时队列"><span class="nav-number">1.1.</span> <span class="nav-text">延时队列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实现"><span class="nav-number">1.1.1.</span> <span class="nav-text">实现</span></a></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/uploads/kevin.JPG"
+      alt="郝文璇">
+  <p class="site-author-name" itemprop="name">郝文璇</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wenxuan-hao</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

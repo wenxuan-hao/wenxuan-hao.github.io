@@ -55,23 +55,19 @@
   };
 </script>
 
-  <meta name="description" content="介绍在分布式环境下，特别是微服务结构的分布式系统中， 一个软件系统调用另外一个远程系统是非常普遍的。这种远程调用的被调用方可能是另外一个进程，或者是跨网路的另外一台主机, 这种远程的调用和进程的内部调用最大的区别是，远程调用可能会失败，或者挂起而没有任何回应，直到超时。更坏的情况是， 如果有多个调用者对同一个挂起的服务进行调用，那么就很有可能的是一个服务的超时等待迅速蔓延到整个分布式系统，引起连锁">
-<meta name="keywords" content="设计模式">
+  <meta name="description" content="常见索引模型 哈希表  适用于只有等值查询的场景，比如 Memcached 及其他一些 NoSQL 引擎。 有序数组  适用于静态存储引擎; 等值查询和范围查询效率都很高, 但是更新效率低.  搜索树 二叉搜索树查询和更新都是O(logn) N叉数适配磁盘的访问模式, N取决于数据块的大小InnoDB索引在 InnoDB 中，表都是根据主键顺序以索引的形式存放的，这种存储方式的表称为索引组织表。所">
+<meta name="keywords" content="MySQL,索引,InnoDB,B+树">
 <meta property="og:type" content="article">
-<meta property="og:title" content="断路器模式">
-<meta property="og:url" content="https://wenxuan-hao.github.io/断路器模式/index.html">
+<meta property="og:title" content="mysql---索引">
+<meta property="og:url" content="https://wenxuan-hao.github.io/mysql-索引/index.html">
 <meta property="og:site_name" content="Sparkle">
-<meta property="og:description" content="介绍在分布式环境下，特别是微服务结构的分布式系统中， 一个软件系统调用另外一个远程系统是非常普遍的。这种远程调用的被调用方可能是另外一个进程，或者是跨网路的另外一台主机, 这种远程的调用和进程的内部调用最大的区别是，远程调用可能会失败，或者挂起而没有任何回应，直到超时。更坏的情况是， 如果有多个调用者对同一个挂起的服务进行调用，那么就很有可能的是一个服务的超时等待迅速蔓延到整个分布式系统，引起连锁">
+<meta property="og:description" content="常见索引模型 哈希表  适用于只有等值查询的场景，比如 Memcached 及其他一些 NoSQL 引擎。 有序数组  适用于静态存储引擎; 等值查询和范围查询效率都很高, 但是更新效率低.  搜索树 二叉搜索树查询和更新都是O(logn) N叉数适配磁盘的访问模式, N取决于数据块的大小InnoDB索引在 InnoDB 中，表都是根据主键顺序以索引的形式存放的，这种存储方式的表称为索引组织表。所">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j1tljdaj30fi0oitb7.jpg">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/9/27/16d702629b61cbcc?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j2e5djbj30ci0bajrv.jpg">
-<meta property="og:updated_time" content="2020-02-24T11:40:36.264Z">
+<meta property="og:updated_time" content="2020-02-24T11:40:35.335Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="断路器模式">
-<meta name="twitter:description" content="介绍在分布式环境下，特别是微服务结构的分布式系统中， 一个软件系统调用另外一个远程系统是非常普遍的。这种远程调用的被调用方可能是另外一个进程，或者是跨网路的另外一台主机, 这种远程的调用和进程的内部调用最大的区别是，远程调用可能会失败，或者挂起而没有任何回应，直到超时。更坏的情况是， 如果有多个调用者对同一个挂起的服务进行调用，那么就很有可能的是一个服务的超时等待迅速蔓延到整个分布式系统，引起连锁">
-<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j1tljdaj30fi0oitb7.jpg">
-  <link rel="canonical" href="https://wenxuan-hao.github.io/断路器模式/">
+<meta name="twitter:title" content="mysql---索引">
+<meta name="twitter:description" content="常见索引模型 哈希表  适用于只有等值查询的场景，比如 Memcached 及其他一些 NoSQL 引擎。 有序数组  适用于静态存储引擎; 等值查询和范围查询效率都很高, 但是更新效率低.  搜索树 二叉搜索树查询和更新都是O(logn) N叉数适配磁盘的访问模式, N取决于数据块的大小InnoDB索引在 InnoDB 中，表都是根据主键顺序以索引的形式存放的，这种存储方式的表称为索引组织表。所">
+  <link rel="canonical" href="https://wenxuan-hao.github.io/mysql-索引/">
 
 
 <script id="page-configurations">
@@ -85,7 +81,7 @@
   };
 </script>
 
-  <title>断路器模式 | Sparkle</title>
+  <title>mysql---索引 | Sparkle</title>
   
 
 
@@ -235,7 +231,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/断路器模式/">
+    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/mysql-索引/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郝文璇">
@@ -247,7 +243,7 @@
       <meta itemprop="name" content="Sparkle">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">断路器模式
+        <h1 class="post-title" itemprop="name headline">mysql---索引
 
           
         </h1>
@@ -263,19 +259,11 @@
                 
               
 
-              <time title="Created: 2019-12-22 23:34:05" itemprop="dateCreated datePublished" datetime="2019-12-22T23:34:05+08:00">2019-12-22</time>
+              <time title="Created: 2020-02-24 19:34:58 / Modified: 19:40:35" itemprop="dateCreated datePublished" datetime="2020-02-24T19:34:58+08:00">2020-02-24</time>
             </span>
           
             
 
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-24 19:40:36" itemprop="dateModified" datetime="2020-02-24T19:40:36+08:00">2020-02-24</time>
-              </span>
             
           
             <span class="post-meta-item">
@@ -284,7 +272,7 @@
               </span>
               <span class="post-meta-item-text">In</span>
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/设计模式/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a></span>
 
                 
                 
@@ -303,18 +291,28 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>在分布式环境下，特别是微服务结构的分布式系统中， 一个软件系统调用另外一个远程系统是非常普遍的。这种远程调用的被调用方可能是另外一个进程，或者是跨网路的另外一台主机, 这种远程的调用和进程的内部调用最大的区别是，远程调用可能会失败，或者挂起而没有任何回应，直到超时。更坏的情况是， 如果有多个调用者对同一个挂起的服务进行调用，那么就很有可能的是一个服务的超时等待迅速蔓延到整个分布式系统，引起连锁反应， 从而消耗掉整个分布式系统大量资源。最终可能导致系统瘫痪。</p>
-<p>断路器（Circuit Breaker）模式就是为了防止在分布式系统中出现这种瀑布似的连锁反应导致的灾难。</p>
-<a id="more"></a>
-<p>一旦某个电器出问题，为了防止灾难，电路的保险丝就会熔断。断路器类似于电路的保险丝， 实现思路非常简单，可以将需要保护的远程服务嗲用封装起来，在内部监听失败次数， 一旦失败次数达到某阀值后，所有后续对该服务的调用，断路器截获后都直接返回错误到调用方，而不会继续调用已经出问题的服务， 从而达到保护调用方的目的, 整个系统也就不会出现因为超时而产生的瀑布式连锁反应。</p>
-<h3 id="基本模式"><a href="#基本模式" class="headerlink" title="基本模式"></a>基本模式</h3><p>当supplier可用时, 断路器会直接返回调用结果给client端; 多次重试后达到重试阈值, 断路器会从close模式转为open模式, 再次调用相同的服务, 断路器会直接返回错误.</p>
-<p><img src="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j1tljdaj30fi0oitb7.jpg" alt></p>
-<p><img src="https://user-gold-cdn.xitu.io/2019/9/27/16d702629b61cbcc?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt></p>
-<h3 id="扩展模式"><a href="#扩展模式" class="headerlink" title="扩展模式"></a>扩展模式</h3><p>基本的断路器模式下，保证了断路器在open状态时，保护supplier不会被调用， 但我们还需要额外的措施可以在supplier恢复服务后，可以重置断路器。一种可行的办法是断路器定期探测supplier的服务是否恢复， 一但恢复， 就将状态设置成close。断路器进行重试时的状态为半开（half-open）状态。<br><img src="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j2e5djbj30ci0bajrv.jpg" alt></p>
-<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><p>一个supplier一般很稳定，如果一旦故障发生后， 检查和恢复需要的时间比较长，通常无法短时间内快速修复的，那么这种服务比较适合采用断路器模式。否则很可能导致ping-pong效应。</p>
-<h3 id="不适用场景"><a href="#不适用场景" class="headerlink" title="不适用场景"></a>不适用场景</h3><p>为了防止一个应用程序试图调用一个远程服务或访问共享资源，如果​​该操作是极有可能失败， 这种模式可能不适合。 </p>
-<p>对于处理中的应用程序访问本地专用资源，例如在存储器内数据结构。在这种环境下通常也不适合，使用断路器只会增加系统开销。 </p>
-<h3 id="golang版实现"><a href="#golang版实现" class="headerlink" title="golang版实现"></a>golang版实现</h3>
+        <h2 id="常见索引模型"><a href="#常见索引模型" class="headerlink" title="常见索引模型"></a>常见索引模型</h2><ul>
+<li>哈希表<br>  适用于只有等值查询的场景，比如 Memcached 及其他一些 NoSQL 引擎。</li>
+<li>有序数组<br>  适用于静态存储引擎; 等值查询和范围查询效率都很高, 但是更新效率低. </li>
+<li>搜索树<ul>
+<li>二叉搜索树<br>查询和更新都是O(logn)</li>
+<li>N叉数<br>适配磁盘的访问模式, N取决于数据块的大小<h2 id="InnoDB索引"><a href="#InnoDB索引" class="headerlink" title="InnoDB索引"></a>InnoDB索引</h2>在 InnoDB 中，表都是根据主键顺序以索引的形式存放的，这种存储方式的表称为索引组织表。所以可以理解为 <strong>每一个表是好几棵B+树, 新建索引就是新建一颗B+数</strong><h4 id="主键索引-聚簇索引"><a href="#主键索引-聚簇索引" class="headerlink" title="主键索引/聚簇索引"></a>主键索引/聚簇索引</h4>叶子节点存储的是整行数据<h5 id="自增主键"><a href="#自增主键" class="headerlink" title="自增主键"></a>自增主键</h5>自增主键是指自增列上定义的主键，在建表语句中一般是这么定义的： NOT NULL PRIMARY KEY AUTO_INCREMENT  </li>
+</ul>
+</li>
+</ul><a id="more"></a>
+<p>优点:   </p>
+<ul>
+<li>性能高: 每次插入一条新记录，都是追加操作，都不涉及到挪动其他记录，也不会触发叶子节点的分裂。</li>
+<li>存储空间小: 整形占4字节, 主键长度越小，普通索引的叶子节点就越小，普通索引占用的空间也就越小<h4 id="非主键索引-二级索引"><a href="#非主键索引-二级索引" class="headerlink" title="非主键索引/二级索引"></a>非主键索引/二级索引</h4>叶子节点存储的是主键的值. ** 因此<h4 id="覆盖索引"><a href="#覆盖索引" class="headerlink" title="覆盖索引"></a>覆盖索引</h4><blockquote>
+<p>性能优化手段之一  </p>
+</blockquote>
+</li>
+</ul>
+<p>即索引“覆盖了”我们的查询需求, 不需要回表操作</p>
+<h2 id="重建索引"><a href="#重建索引" class="headerlink" title="重建索引"></a>重建索引</h2><p>索引可能因为删除，或者页分裂等原因，导致数据页有空洞，重建索引的过程会创建一个新的索引，把数据按顺序插入，这样页面的利用率最高，也就是索引更紧凑、更省空间。</p>
+<h5 id="重建普通索引"><a href="#重建普通索引" class="headerlink" title="重建普通索引"></a>重建普通索引</h5><pre><code>alter table T drop inedx k
+alter table T add index k</code></pre><h5 id="重建主键索引"><a href="#重建主键索引" class="headerlink" title="重建主键索引"></a>重建主键索引</h5><pre><code>alter table T engine=InnoDB</code></pre><p>不用两个alter的原因是, 不管是删除主键索引还是创建主键索引, 都会使表重建, 那么一个alter就是无用功.</p>
+
     </div>
 
     
@@ -329,7 +327,13 @@
           
           <div class="post-tags">
             
-              <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
+              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+            
+              <a href="/tags/索引/" rel="tag"># 索引</a>
+            
+              <a href="/tags/InnoDB/" rel="tag"># InnoDB</a>
+            
+              <a href="/tags/B-树/" rel="tag"># B+树</a>
             
           </div>
         
@@ -339,14 +343,18 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
+                <a href="/mysql-事务/" rel="next" title="mysql---事务">
+                  <i class="fa fa-chevron-left"></i> mysql---事务
+                </a>
+              
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
               
-                <a href="/计算机网路基础回顾/" rel="prev" title="计算机网路基础回顾">
-                  计算机网路基础回顾 <i class="fa fa-chevron-right"></i>
+                <a href="/乐观锁and悲观锁/" rel="prev" title="乐观锁and悲观锁">
+                  乐观锁and悲观锁 <i class="fa fa-chevron-right"></i>
                 </a>
               
             </div>
@@ -396,7 +404,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本模式"><span class="nav-number">2.</span> <span class="nav-text">基本模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展模式"><span class="nav-number">3.</span> <span class="nav-text">扩展模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用场景"><span class="nav-number">4.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不适用场景"><span class="nav-number">5.</span> <span class="nav-text">不适用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#golang版实现"><span class="nav-number">6.</span> <span class="nav-text">golang版实现</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#常见索引模型"><span class="nav-number">1.</span> <span class="nav-text">常见索引模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#InnoDB索引"><span class="nav-number">2.</span> <span class="nav-text">InnoDB索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重建索引"><span class="nav-number">3.</span> <span class="nav-text">重建索引</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->

@@ -55,23 +55,21 @@
   };
 </script>
 
-  <meta name="description" content="介绍在分布式环境下，特别是微服务结构的分布式系统中， 一个软件系统调用另外一个远程系统是非常普遍的。这种远程调用的被调用方可能是另外一个进程，或者是跨网路的另外一台主机, 这种远程的调用和进程的内部调用最大的区别是，远程调用可能会失败，或者挂起而没有任何回应，直到超时。更坏的情况是， 如果有多个调用者对同一个挂起的服务进行调用，那么就很有可能的是一个服务的超时等待迅速蔓延到整个分布式系统，引起连锁">
-<meta name="keywords" content="设计模式">
+  <meta name="description" content="使用为了保证原子性, redis提供了简单的事务. 但不支持事务回滚 123multi 开始事务, 之后输入命令, 会放入队列而不是真正的执行discard 停止事务exec 执行事务, 真正执行命令">
+<meta name="keywords" content="redis,事务,watch命令">
 <meta property="og:type" content="article">
-<meta property="og:title" content="断路器模式">
-<meta property="og:url" content="https://wenxuan-hao.github.io/断路器模式/index.html">
+<meta property="og:title" content="redis---事务">
+<meta property="og:url" content="https://wenxuan-hao.github.io/redis-事务/index.html">
 <meta property="og:site_name" content="Sparkle">
-<meta property="og:description" content="介绍在分布式环境下，特别是微服务结构的分布式系统中， 一个软件系统调用另外一个远程系统是非常普遍的。这种远程调用的被调用方可能是另外一个进程，或者是跨网路的另外一台主机, 这种远程的调用和进程的内部调用最大的区别是，远程调用可能会失败，或者挂起而没有任何回应，直到超时。更坏的情况是， 如果有多个调用者对同一个挂起的服务进行调用，那么就很有可能的是一个服务的超时等待迅速蔓延到整个分布式系统，引起连锁">
+<meta property="og:description" content="使用为了保证原子性, redis提供了简单的事务. 但不支持事务回滚 123multi 开始事务, 之后输入命令, 会放入队列而不是真正的执行discard 停止事务exec 执行事务, 真正执行命令">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j1tljdaj30fi0oitb7.jpg">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/9/27/16d702629b61cbcc?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j2e5djbj30ci0bajrv.jpg">
-<meta property="og:updated_time" content="2020-02-24T11:40:36.264Z">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0082zybply1gbw9swffagj30fv04t3yy.jpg">
+<meta property="og:updated_time" content="2020-02-24T11:40:31.548Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="断路器模式">
-<meta name="twitter:description" content="介绍在分布式环境下，特别是微服务结构的分布式系统中， 一个软件系统调用另外一个远程系统是非常普遍的。这种远程调用的被调用方可能是另外一个进程，或者是跨网路的另外一台主机, 这种远程的调用和进程的内部调用最大的区别是，远程调用可能会失败，或者挂起而没有任何回应，直到超时。更坏的情况是， 如果有多个调用者对同一个挂起的服务进行调用，那么就很有可能的是一个服务的超时等待迅速蔓延到整个分布式系统，引起连锁">
-<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j1tljdaj30fi0oitb7.jpg">
-  <link rel="canonical" href="https://wenxuan-hao.github.io/断路器模式/">
+<meta name="twitter:title" content="redis---事务">
+<meta name="twitter:description" content="使用为了保证原子性, redis提供了简单的事务. 但不支持事务回滚 123multi 开始事务, 之后输入命令, 会放入队列而不是真正的执行discard 停止事务exec 执行事务, 真正执行命令">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/0082zybply1gbw9swffagj30fv04t3yy.jpg">
+  <link rel="canonical" href="https://wenxuan-hao.github.io/redis-事务/">
 
 
 <script id="page-configurations">
@@ -85,7 +83,7 @@
   };
 </script>
 
-  <title>断路器模式 | Sparkle</title>
+  <title>redis---事务 | Sparkle</title>
   
 
 
@@ -235,7 +233,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/断路器模式/">
+    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/redis-事务/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郝文璇">
@@ -247,7 +245,7 @@
       <meta itemprop="name" content="Sparkle">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">断路器模式
+        <h1 class="post-title" itemprop="name headline">redis---事务
 
           
         </h1>
@@ -263,19 +261,11 @@
                 
               
 
-              <time title="Created: 2019-12-22 23:34:05" itemprop="dateCreated datePublished" datetime="2019-12-22T23:34:05+08:00">2019-12-22</time>
+              <time title="Created: 2020-02-24 19:30:02 / Modified: 19:40:31" itemprop="dateCreated datePublished" datetime="2020-02-24T19:30:02+08:00">2020-02-24</time>
             </span>
           
             
 
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-24 19:40:36" itemprop="dateModified" datetime="2020-02-24T19:40:36+08:00">2020-02-24</time>
-              </span>
             
           
             <span class="post-meta-item">
@@ -284,7 +274,7 @@
               </span>
               <span class="post-meta-item-text">In</span>
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/设计模式/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
 
                 
                 
@@ -303,18 +293,26 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>在分布式环境下，特别是微服务结构的分布式系统中， 一个软件系统调用另外一个远程系统是非常普遍的。这种远程调用的被调用方可能是另外一个进程，或者是跨网路的另外一台主机, 这种远程的调用和进程的内部调用最大的区别是，远程调用可能会失败，或者挂起而没有任何回应，直到超时。更坏的情况是， 如果有多个调用者对同一个挂起的服务进行调用，那么就很有可能的是一个服务的超时等待迅速蔓延到整个分布式系统，引起连锁反应， 从而消耗掉整个分布式系统大量资源。最终可能导致系统瘫痪。</p>
-<p>断路器（Circuit Breaker）模式就是为了防止在分布式系统中出现这种瀑布似的连锁反应导致的灾难。</p>
+        <h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>为了保证原子性, redis提供了简单的事务. 但不支持事务回滚</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">multi 开始事务, 之后输入命令, 会放入队列而不是真正的执行</span><br><span class="line">discard 停止事务</span><br><span class="line">exec 执行事务, 真正执行命令</span><br></pre></td></tr></table></figure>
+
 <a id="more"></a>
-<p>一旦某个电器出问题，为了防止灾难，电路的保险丝就会熔断。断路器类似于电路的保险丝， 实现思路非常简单，可以将需要保护的远程服务嗲用封装起来，在内部监听失败次数， 一旦失败次数达到某阀值后，所有后续对该服务的调用，断路器截获后都直接返回错误到调用方，而不会继续调用已经出问题的服务， 从而达到保护调用方的目的, 整个系统也就不会出现因为超时而产生的瀑布式连锁反应。</p>
-<h3 id="基本模式"><a href="#基本模式" class="headerlink" title="基本模式"></a>基本模式</h3><p>当supplier可用时, 断路器会直接返回调用结果给client端; 多次重试后达到重试阈值, 断路器会从close模式转为open模式, 再次调用相同的服务, 断路器会直接返回错误.</p>
-<p><img src="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j1tljdaj30fi0oitb7.jpg" alt></p>
-<p><img src="https://user-gold-cdn.xitu.io/2019/9/27/16d702629b61cbcc?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt></p>
-<h3 id="扩展模式"><a href="#扩展模式" class="headerlink" title="扩展模式"></a>扩展模式</h3><p>基本的断路器模式下，保证了断路器在open状态时，保护supplier不会被调用， 但我们还需要额外的措施可以在supplier恢复服务后，可以重置断路器。一种可行的办法是断路器定期探测supplier的服务是否恢复， 一但恢复， 就将状态设置成close。断路器进行重试时的状态为半开（half-open）状态。<br><img src="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j2e5djbj30ci0bajrv.jpg" alt></p>
-<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><p>一个supplier一般很稳定，如果一旦故障发生后， 检查和恢复需要的时间比较长，通常无法短时间内快速修复的，那么这种服务比较适合采用断路器模式。否则很可能导致ping-pong效应。</p>
-<h3 id="不适用场景"><a href="#不适用场景" class="headerlink" title="不适用场景"></a>不适用场景</h3><p>为了防止一个应用程序试图调用一个远程服务或访问共享资源，如果​​该操作是极有可能失败， 这种模式可能不适合。 </p>
-<p>对于处理中的应用程序访问本地专用资源，例如在存储器内数据结构。在这种环境下通常也不适合，使用断路器只会增加系统开销。 </p>
-<h3 id="golang版实现"><a href="#golang版实现" class="headerlink" title="golang版实现"></a>golang版实现</h3>
+<h4 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h4><ol>
+<li>在事务中, 如果有一条命令执行错误, 其他的命令也会正常执行<br><img src="https://tva1.sinaimg.cn/large/0082zybply1gbw9swffagj30fv04t3yy.jpg" alt="事务案例"><br>即redis的事务不满足原子性, 但满足隔离性(redis为单线程, 一个事务内的指定可以得到严格的串行化执行)</li>
+<li>使用discard停止事务后, 之前提交的命令不会执行<h2 id="流水线vs事务"><a href="#流水线vs事务" class="headerlink" title="流水线vs事务"></a>流水线vs事务</h2>流水线: 将多个命令打包, 然后一并发送到服务器<br>事务: 将多个命令打包, 然后让服务器一并执行<h4 id="客户端使用"><a href="#客户端使用" class="headerlink" title="客户端使用"></a>客户端使用</h4>在客户端中使用事务, 很多库的实现方式是用pipline将命令打包发送到服务器, 并在服务端用事务执行. 这样就能实现多个命令的打包发送, 以及打包执行. </li>
+</ol>
+<h2 id="watch命令"><a href="#watch命令" class="headerlink" title="watch命令"></a>watch命令</h2><p>watch命令可以对数据库的key进行监视, 如果在exec之前, 这些键的值发生了变化, 那么该事务执行失败.</p>
+<h4 id="取消watch"><a href="#取消watch" class="headerlink" title="取消watch"></a>取消watch</h4><ol>
+<li>unwatch命令</li>
+<li>exec命令执行事务后, 监视自动取消</li>
+<li>discard终止事务, 监视自动取消<h4 id="使用watch实现乐观锁"><a href="#使用watch实现乐观锁" class="headerlink" title="使用watch实现乐观锁"></a>使用watch实现乐观锁</h4>用被监视的key当做锁, 如果键值发生改变, 事务执行失败; <blockquote>
+<p>分布式锁是一种悲观锁</p>
+</blockquote>
+<h5 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h5>假设我们对redis中的数据进行倍数操作; 如果是加减操作, 可以直接用incrby, 不会产生并发问题. 但是redis并没有提供倍数操作的指令, 我们只能先取值, 运算, 再存入. 这就会产生并发问题. 解决方法可以用watch<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">package redis;</span><br><span class="line"></span><br><span class="line">import redis.clients.jedis.Jedis;</span><br><span class="line">import redis.clients.jedis.Transaction;</span><br><span class="line"></span><br><span class="line">import java.util.List;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @Author wenxuan.hao</span><br><span class="line"> * @create 2020-02-16 00:31</span><br><span class="line"> */</span><br><span class="line">public class Watch &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Jedis jedis = new Jedis();</span><br><span class="line">        String userId = &quot;abc&quot;;</span><br><span class="line">        String key = keyFor(userId);</span><br><span class="line">        jedis.setnx(key, String.valueOf(5));</span><br><span class="line">        System.out.println(doubleAccount(jedis, userId));</span><br><span class="line">        jedis.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static int doubleAccount(Jedis jedis, String userId) &#123;</span><br><span class="line">        String key = keyFor(userId);</span><br><span class="line">        // 若加锁失败, 自旋</span><br><span class="line">        while (true) &#123;</span><br><span class="line">            jedis.watch(key);</span><br><span class="line">            int value = Integer.parseInt(jedis.get(key));</span><br><span class="line">            value *= 2; // 加倍</span><br><span class="line"></span><br><span class="line">            // 事务</span><br><span class="line">            Transaction tx = jedis.multi();</span><br><span class="line">            tx.set(key, String.valueOf(value));</span><br><span class="line">            List&lt;Object&gt; res = tx.exec();</span><br><span class="line">            // 因为对key进行了watch, 如果key没有改变, 更新成功, 跳出循环</span><br><span class="line">            if (res != null) &#123;</span><br><span class="line">                break; // 成功了</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return Integer.parseInt(jedis.get(key)); // 重新获取余额</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static String keyFor(String userId) &#123;</span><br><span class="line">        return String.format(&quot;account_%s&quot;, userId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+
     </div>
 
     
@@ -329,7 +327,11 @@
           
           <div class="post-tags">
             
-              <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
+              <a href="/tags/redis/" rel="tag"># redis</a>
+            
+              <a href="/tags/事务/" rel="tag"># 事务</a>
+            
+              <a href="/tags/watch命令/" rel="tag"># watch命令</a>
             
           </div>
         
@@ -339,14 +341,18 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
+                <a href="/redis-队列/" rel="next" title="redis---队列">
+                  <i class="fa fa-chevron-left"></i> redis---队列
+                </a>
+              
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
               
-                <a href="/计算机网路基础回顾/" rel="prev" title="计算机网路基础回顾">
-                  计算机网路基础回顾 <i class="fa fa-chevron-right"></i>
+                <a href="/redis-高可用/" rel="prev" title="redis---高可用">
+                  redis---高可用 <i class="fa fa-chevron-right"></i>
                 </a>
               
             </div>
@@ -396,7 +402,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本模式"><span class="nav-number">2.</span> <span class="nav-text">基本模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展模式"><span class="nav-number">3.</span> <span class="nav-text">扩展模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用场景"><span class="nav-number">4.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不适用场景"><span class="nav-number">5.</span> <span class="nav-text">不适用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#golang版实现"><span class="nav-number">6.</span> <span class="nav-text">golang版实现</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用"><span class="nav-number">1.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#流水线vs事务"><span class="nav-number">2.</span> <span class="nav-text">流水线vs事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#watch命令"><span class="nav-number">3.</span> <span class="nav-text">watch命令</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->

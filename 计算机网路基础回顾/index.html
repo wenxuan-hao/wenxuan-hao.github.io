@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="本文是对计算机网络基础做的一次整体的梳理">
+<meta name="keywords" content="网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网路基础回顾">
+<meta property="og:url" content="https://wenxuan-hao.github.io/计算机网路基础回顾/index.html">
+<meta property="og:site_name" content="Sparkle">
+<meta property="og:description" content="本文是对计算机网络基础做的一次整体的梳理">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0082zybply1gbo5uh9xw0j30nc07kt9w.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0082zybply1gbp1xqf0sdj30rs0hntc2.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0082zybply1gbp29ejcnbj30ni08kq3z.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0082zybply1gbo6wu1y80j30er09wmy6.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0082zybply1gbsyrstfaoj30cs06at9f.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0082zybply1gbsysy0j9vj30cp06c750.jpg">
+<meta property="og:updated_time" content="2020-02-12T06:48:04.896Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="计算机网路基础回顾">
+<meta name="twitter:description" content="本文是对计算机网络基础做的一次整体的梳理">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/0082zybply1gbo5uh9xw0j30nc07kt9w.jpg">
+  <link rel="canonical" href="https://wenxuan-hao.github.io/计算机网路基础回顾/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>计算机网路基础回顾 | Sparkle</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sparkle</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">code and life</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/计算机网路基础回顾/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郝文璇">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/kevin.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sparkle">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">计算机网路基础回顾
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-12-23 12:13:28" itemprop="dateCreated datePublished" datetime="2019-12-23T12:13:28+08:00">2019-12-23</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-12 14:48:04" itemprop="dateModified" datetime="2020-02-12T14:48:04+08:00">2020-02-12</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/网络/" itemprop="url" rel="index"><span itemprop="name">网络</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>本文是对计算机网络基础做的一次整体的梳理</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="osi七层模型"><a href="#osi七层模型" class="headerlink" title="osi七层模型"></a>osi七层模型</h1><ul>
+<li>应用层: 针对特定应用的协议</li>
+<li>表示层: 设备固有数据格式 → 网络标准数据格式</li>
+<li>会话层: 通信管理, 负责建立和断开通信连接</li>
+<li>传输层: 可靠传输</li>
+<li>网络层: 地址管理/路由选择</li>
+<li>数据链路层: 数据帧 &lt;-&gt; 01比特流 的转化</li>
+<li>物理层: 01比特流 &lt;-&gt; 电子信号 的转化</li>
+</ul>
+<h1 id="设备"><a href="#设备" class="headerlink" title="设备"></a>设备</h1><h4 id="中继器-集线器-1层交换设备"><a href="#中继器-集线器-1层交换设备" class="headerlink" title="中继器/ 集线器: 1层交换设备"></a>中继器/ 集线器: 1层交换设备</h4><ul>
+<li>区别: 集线器有多端口, 中继器只有两个  </li>
+<li>作用: 物理层面延长网络, 信号放大</li>
+<li>特点: 逐比特转发, 无法改变传输速度, 无差错控制, 不能连接传播速度不同的网络</li>
+</ul>
+<h4 id="网桥-交换机-2层交换设备"><a href="#网桥-交换机-2层交换设备" class="headerlink" title="网桥/ 交换机: 2层交换设备"></a>网桥/ 交换机: 2层交换设备</h4><ul>
+<li>区别: 交换机有多个端口, 网桥只有两个</li>
+<li>作用: 识别数据帧 -&gt; 存储于内存 -&gt; 重新生成新的帧转发给另一网段</li>
+<li>特点: 不限制连接网段个数, 可以连接传输速率不同的网段, 具有差错检测, 地址自学习功能</li>
+</ul>
+<h4 id="路由器-3层交换设备"><a href="#路由器-3层交换设备" class="headerlink" title="路由器: 3层交换设备"></a>路由器: 3层交换设备</h4><h4 id="4-7层交换机"><a href="#4-7层交换机" class="headerlink" title="4-7层交换机"></a>4-7层交换机</h4><ul>
+<li>以传输层及以上的协议为基础, 分析收发数据, 并做特定处理</li>
+<li>eg. 负责均衡器, 带宽控制</li>
+</ul>
+<h4 id="网关"><a href="#网关" class="headerlink" title="网关"></a>网关</h4><ul>
+<li>传输层及其以上: 转发+转换数据</li>
+<li>eg. 手机电子邮件和互联网邮件的转换</li>
+</ul>
+<h1 id="数据链路层"><a href="#数据链路层" class="headerlink" title="数据链路层"></a>数据链路层</h1><h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h4><p>提供直连的两个设备间的通信功能, 在互联的同一种数据链路的节点之间进行包传递</p>
+<h4 id="MAC地址"><a href="#MAC地址" class="headerlink" title="MAC地址"></a>MAC地址</h4><p><img src="https://tva1.sinaimg.cn/large/0082zybply1gbo5uh9xw0j30nc07kt9w.jpg" alt="mac地址"></p>
+<h1 id="网络层-ip协议"><a href="#网络层-ip协议" class="headerlink" title="网络层: ip协议"></a>网络层: ip协议</h1><h2 id="作用-1"><a href="#作用-1" class="headerlink" title="作用"></a>作用</h2><p>可以跨过不同的数据链路, 在复杂的网络环境中将数据包发送给目标地址  </p>
+<h2 id="ip地址"><a href="#ip地址" class="headerlink" title="ip地址"></a>ip地址</h2><h4 id="格式"><a href="#格式" class="headerlink" title="格式"></a>格式</h4><p><strong>组成</strong>: 网络标识 : 主机标识 (路由器只根据网络标识进行转发)<br><strong>表示</strong>: xx.xx.xx.xx / xx(代表网络标识的位数)<br><strong>首部</strong>:</p>
+<p><img src="https://tva1.sinaimg.cn/large/0082zybply1gbp1xqf0sdj30rs0hntc2.jpg" alt="ip地址首部">  </p>
+<ul>
+<li>版本: 标识ip版本, ipv4该值为4</li>
+<li>首部长度: 单位为4字节; 当可选项为空时, 该值为5, 即20字节</li>
+<li>总长度: 首部+数据的总长度</li>
+<li>标识, 标志, 片偏移 共同控制数据包的分片与重组<ul>
+<li>标识: 同一个数据包标识相同</li>
+<li>标志: 分片的相关信息<br><img src="https://tva1.sinaimg.cn/large/0082zybply1gbp29ejcnbj30ni08kq3z.jpg" alt="标志"></li>
+<li>片偏移: 每个分片相对于原始数据的位置. 第一个分片该值为0</li>
+</ul>
+</li>
+<li>生存时间: 每经过一个路由器, TTL减1, 变成0时丢弃该包</li>
+<li>协议字段: 表示ip首部的下一个首部隶属于那个协议, eg. tcp/udp/icmp…<h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4><img src="https://tva1.sinaimg.cn/large/0082zybply1gbo6wu1y80j30er09wmy6.jpg" alt="ip地址分类">  </li>
+</ul>
+<p>一个ip地址只要确定了它的分类, 也就确定了网络标识和主机标识  </p>
+<ul>
+<li><strong>A类</strong>: 0.0.0.0 - 127.0.0.0</li>
+<li><strong>B类</strong>: 128.0.0.1 - 191.255.0.0</li>
+<li><strong>C类</strong>: 192.168.0.0 - 229.255.255.0</li>
+<li><strong>D类</strong>: 224.0.0.0 - 239.255.255.255 没有主机标识, 用于多播</li>
+<li><strong>主机地址全0</strong>: 表示对应ip地址不可获知</li>
+<li><strong>主机地址全1</strong>: 用作广播地址; 广播分为 <code>本地广播</code> 和 <code>直接广播</code>.<br>在本网络中的广播叫做本地广播, 此时ip地址的网络标识为该网络的地址, 主机标识为全1; 该ip会被路由器屏蔽, 所以不会到达其他的网段上; A网络下的主机向B网络广播叫做直接广播;</li>
+</ul>
+<h4 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h4><p>为了解决分类造成ip地址浪费的情况. 因为同一链路网络标识相同, 已b类ip地址为例, 同一链路可架设六万多台主机, 但实际情况中一般不会出现这种情况, 因此造成了地址的浪费. 因此我们引入子网掩码, 使ip地址不再受限于分类.   </p>
+<p><strong>格式</strong>: 网络标识位全1, 主机标识位全0</p>
+<h4 id="全局地址-私有地址"><a href="#全局地址-私有地址" class="headerlink" title="全局地址/私有地址"></a>全局地址/私有地址</h4><p>为了解决ip地址分配不够的问题, 出现了私有地址. 全局地址在整个互联网保持唯一, 私有地址只需要在同一个域内保持唯一即可. 若配有私有ip的主机联网时, 则需通过NAT进行通信. </p>
+<h5 id="私有网络ip地址范围"><a href="#私有网络ip地址范围" class="headerlink" title="私有网络ip地址范围:"></a>私有网络ip地址范围:</h5><ul>
+<li><strong>A类</strong>: 10.0.0.0 - 10.255.255.255 </li>
+<li><strong>B类</strong>: 172.16.0.0 - 172.31.255.255 </li>
+<li><strong>C类</strong>: 192.168.0.0 - 192.168.255.255<br>即所有10开头, 192.168开头, 和172开头的都是私有地址</li>
+</ul>
+<h2 id="路由控制"><a href="#路由控制" class="headerlink" title="路由控制"></a>路由控制</h2><h4 id="路由表"><a href="#路由表" class="headerlink" title="路由表"></a>路由表</h4><p>格式: ip地址 / 下一个路由器<br>到达每个路由器后, 在路由表中找到符合目标地址的下一跳地址, 转发至下一个路由器; 直至找到目标网络; </p>
+<h4 id="分类-1"><a href="#分类-1" class="headerlink" title="分类"></a>分类</h4><h5 id="默认路由"><a href="#默认路由" class="headerlink" title="默认路由"></a>默认路由</h5><p>ip地址为 0.0.0.0 或 default</p>
+<h5 id="主机路由"><a href="#主机路由" class="headerlink" title="主机路由"></a>主机路由</h5><p>ip地址为 x.x.x.x/32, 即所有整个ip的所有位都参与路由, 多用于不希望通过网络地址路由的情况. </p>
+<h5 id="环回地址"><a href="#环回地址" class="headerlink" title="环回地址"></a>环回地址</h5><p>localhost / 127.0.0.1<br>是同一台计算机的程序进行网络通信所使用的默认地址, 使用该地址时, 数据包不会发送到网络上</p>
+<h2 id="MTU与分片"><a href="#MTU与分片" class="headerlink" title="MTU与分片"></a>MTU与分片</h2><p><strong>MTU</strong>: 每种链路的最大传输单元; eg.以太网的MTU为1500<br>因为帧大小有限制, 且<em>不同链路的MTU值不尽相同</em>. 因此, 必要时路由器会对ip数据包进行分片, 并在目标主机处进行重组</p>
+<h2 id="IPV6"><a href="#IPV6" class="headerlink" title="IPV6"></a>IPV6</h2><h2 id="ARP"><a href="#ARP" class="headerlink" title="ARP"></a>ARP</h2><p>以目标ip地址为线索, 用来获得 <strong>下一个应该接受数据包的网络设备的mac地址</strong>  ;<br>当目标主机在同一链路上, 利用ARP广播直接获得目标主机的mac地址, 进行发送;<br>当目标主机不在同一链路, 则通过ARP获得下一跳路由器的mac地址;<br>获取到的mac地址会缓存到ARP缓存表中, 直至过期失效; (发送主机和目标主机都会进行mac地址缓存)</p>
+<h3 id="RARP"><a href="#RARP" class="headerlink" title="RARP"></a>RARP</h3><p>我们的个人电脑可以通过DHCP自动获取本机ip, 但使用例如打印机等嵌入设备, 就无法使用DHCP协议. 此时我们需要一台RARP服务器, 并在该服务器上注册设备的mac地址及其ip地址. 当设备启动后, 会发送获取ip地址的请求.</p>
+<h2 id="ICMP"><a href="#ICMP" class="headerlink" title="ICMP"></a>ICMP</h2><p>用来辅助ip协议, 报告异常/获取路由, 子网掩码等网络信息</p>
+<h4 id="分类-2"><a href="#分类-2" class="headerlink" title="分类"></a>分类</h4><ul>
+<li>目标不可达: 连接不到目标主机. </li>
+<li>超时消息: 路由器发现某报文TTL为0, 就会像发送端发送该消息类型</li>
+<li>回送消息: 发送ICMP回送请求消息, 收到ICMP回送应答消息. eg.ping命令就利用该消息实现</li>
+<li>地址掩码消息: 向目标主机发送ICMP地址掩码请求消息, 就会受到对应的ICMP地址掩码应答消息</li>
+</ul>
+<h2 id="DHCP"><a href="#DHCP" class="headerlink" title="DHCP"></a>DHCP</h2><p>主机接入网络后, 自动获取tcp/ip通信所以需要的设置. (ip, 子网掩码, 默认路由, dns等等)</p>
+<h4 id="工作机制"><a href="#工作机制" class="headerlink" title="工作机制"></a>工作机制</h4><ol>
+<li>客户端发出ip租用请求报文, 通过 <code>UDP端口69</code> (DHCP请求默认端口)向网络中发送 DHCPDISCOVER 广播包;  该包中源ip: 0.0.0.0, 目的ip: 255.255.255.255</li>
+<li>任何接收到 DHCPDISCOVER 广播包的DHCP服务器, 都会通过 <code>UDP端口68</code> 回复 DHCPOFFER 广播包, 来提供信息; 该包中源ip为DHCP服务器ip, 目标ip为255.255.255.255</li>
+<li>客户机若收到不止一个DHCPOFFER包, 会选择收到的第一个, 并发送 DHCPREQUEST 包, 其中包含提供ip的DHCP服务器和选择的ip</li>
+<li>没被选择的DHCP服务器收到DHCPREQUEST包后, 会撤销之前分配的ip, 以供下次使用; 被选择的DHCP服务器会广播发送 DHCPACK <h4 id="确保所选ip可用"><a href="#确保所选ip可用" class="headerlink" title="确保所选ip可用"></a>确保所选ip可用</h4>DHCP服务器: 在分配ip地址前发送 ICMP回送请求包, 确认没有返回应答<br>客户端: 向获得的ip发送ARP请求包, 确认没有返回应答<h4 id="DHCP中继代理"><a href="#DHCP中继代理" class="headerlink" title="DHCP中继代理"></a>DHCP中继代理</h4>通过DHCP中继代理, 对不同网段的ip地址分配也可以通过一个DHCP服务器来进行统一管理; 客户端会向DHCP中继代理发送广播包, 中继代理服务器收到请求后, 再以单播的形式发送给DHCP服务器</li>
+</ol>
+<h2 id="NAT"><a href="#NAT" class="headerlink" title="NAT"></a>NAT</h2><p>用来在本网络中使用私有ip, 在连接互联网时转为全局ip的技术<br>NAT有两种, 一种是替换ip, 但现在很少使用;<br>另一种叫 <code>NAPT</code>, 它的工作原理是用网关的ip, 并分配一个临时会话的端口号; 对于NAPT又分为两个大类型: </p>
+<h5 id="Symmetric-NAT型-对称型"><a href="#Symmetric-NAT型-对称型" class="headerlink" title="Symmetric NAT型 (对称型)"></a>Symmetric NAT型 (对称型)</h5><p><img src="https://tva1.sinaimg.cn/large/0082zybply1gbsyrstfaoj30cs06at9f.jpg" alt="NAT型 (对称型)"><br>即在网关中, 两个不同session, ip相同, 端口号不同. </p>
+<h5 id="Cone-NAT型（圆锥型-占主流）"><a href="#Cone-NAT型（圆锥型-占主流）" class="headerlink" title="Cone NAT型（圆锥型, 占主流）"></a>Cone NAT型（圆锥型, 占主流）</h5><p><img src="https://tva1.sinaimg.cn/large/0082zybply1gbsysy0j9vj30cp06c750.jpg" alt><br>两个不同session, ip和端口号都相同. (但因为目标地址不同, 所以也不是一个连接)</p>
+<h1 id="TCP-UDP"><a href="#TCP-UDP" class="headerlink" title="TCP/UDP"></a>TCP/UDP</h1><h2 id="端口号"><a href="#端口号" class="headerlink" title="端口号"></a>端口号</h2><p>通过端口号, 我们可以知道请求究竟是发给的哪个守护进程. 例如当收到tcp建立的连接请求时(通过ip首部字段可得知), 如果目标端口号为22, 则转给sshd(ssh守护进程), 如果是80则转给httpd(http守护进程).<br>需要注意的是, 端口号由其使用的传输层协议决定, 因此不同传输协议可以使用相同的端口号. 但是知名端口号与传输层协议无关, 例如53端口无论是tcp还udp, 都是用于dns服务</p>
+<h5 id="分类-3"><a href="#分类-3" class="headerlink" title="分类"></a>分类</h5><ul>
+<li>知名端口号: 0-1023<br>eg. http:80  FTP:21  ssh:22</li>
+<li>注册端口号: 1024-49151</li>
+<li>时序分配法: 49152-65535</li>
+</ul>
+<h2 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h2><h3 id="确认应答-序列号-超时重传-可靠传输"><a href="#确认应答-序列号-超时重传-可靠传输" class="headerlink" title="确认应答 + 序列号 + 超时重传 (可靠传输)"></a>确认应答 + 序列号 + 超时重传 (可靠传输)</h3><p>tcp通过确认应答实现可靠地数据传输. 在一定时间内没有等到确认应答, 发送端就会进行重发.<br>确认应答是通过序列号实现的, 序列号是按顺序给发送数据的每个自己都编上号码. 接收端通过查询接受数据<code>tcp首部中的序列号</code>和<code>数据长度</code>(ip首部中的数据包长度 - ip首部长度 - tcp首部长度), 将自己下一次应该接受的序号作为确认应答发出去.</p>
+<h3 id="MSS-最大消息长度"><a href="#MSS-最大消息长度" class="headerlink" title="MSS: 最大消息长度"></a>MSS: 最大消息长度</h3><p>tcp在传送大量数据时, 以MSS的大小将数据进行分割发送. 进行重发时也是以MSS为单位.<br>MSS是在三次握手时, 两端主机分别在tcp首部中写入自己的MSS, 并取较小值使用</p>
+<h3 id="窗口控制-提高速度"><a href="#窗口控制-提高速度" class="headerlink" title="窗口控制(提高速度)"></a>窗口控制(提高速度)</h3><p>如果发送端每次等到确认应答后, 再发送下一个段, 包的往返时间会很长. 因此, tcp引入的窗口的概念.<br><strong>窗口大小</strong>: 无需等待确认应答而可以继续发送消息的最大值.  </p>
+<h5 id="重发控制"><a href="#重发控制" class="headerlink" title="重发控制"></a>重发控制</h5><p>那么, 使用窗口后确认应答, 以及重发控制又是如何实现的呢?<br>当接受主机收到一个自己应该接受的序号以外的数据时, 会对当前为止收到的数据返回确认应答. 而如果发送端主机连续三次收到同一个确认应答, 就会对其对应数据进行重发.</p>
+<h5 id="流控制"><a href="#流控制" class="headerlink" title="流控制"></a>流控制</h5><p>如果接收端窗口已满, 并需要一段时间来处理消息, 此时发送端发送的数据就会被丢弃. 为了防止这种情况下网络流量的无端浪费, 我们引入了流控制.  </p>
+<h3 id="拥塞控制"><a href="#拥塞控制" class="headerlink" title="拥塞控制"></a>拥塞控制</h3>
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/网络/" rel="tag"># 网络</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/断路器模式/" rel="next" title="断路器模式">
+                  <i class="fa fa-chevron-left"></i> 断路器模式
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/软硬链接/" rel="prev" title="软链接/硬链接">
+                  软链接/硬链接 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#osi七层模型"><span class="nav-number">1.</span> <span class="nav-text">osi七层模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#设备"><span class="nav-number">2.</span> <span class="nav-text">设备</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据链路层"><span class="nav-number">3.</span> <span class="nav-text">数据链路层</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#网络层-ip协议"><span class="nav-number">4.</span> <span class="nav-text">网络层: ip协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#作用-1"><span class="nav-number">4.1.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ip地址"><span class="nav-number">4.2.</span> <span class="nav-text">ip地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#路由控制"><span class="nav-number">4.3.</span> <span class="nav-text">路由控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MTU与分片"><span class="nav-number">4.4.</span> <span class="nav-text">MTU与分片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPV6"><span class="nav-number">4.5.</span> <span class="nav-text">IPV6</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ARP"><span class="nav-number">4.6.</span> <span class="nav-text">ARP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RARP"><span class="nav-number">4.6.1.</span> <span class="nav-text">RARP</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ICMP"><span class="nav-number">4.7.</span> <span class="nav-text">ICMP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DHCP"><span class="nav-number">4.8.</span> <span class="nav-text">DHCP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NAT"><span class="nav-number">4.9.</span> <span class="nav-text">NAT</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TCP-UDP"><span class="nav-number">5.</span> <span class="nav-text">TCP/UDP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#端口号"><span class="nav-number">5.1.</span> <span class="nav-text">端口号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP"><span class="nav-number">5.2.</span> <span class="nav-text">TCP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#确认应答-序列号-超时重传-可靠传输"><span class="nav-number">5.2.1.</span> <span class="nav-text">确认应答 + 序列号 + 超时重传 (可靠传输)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MSS-最大消息长度"><span class="nav-number">5.2.2.</span> <span class="nav-text">MSS: 最大消息长度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#窗口控制-提高速度"><span class="nav-number">5.2.3.</span> <span class="nav-text">窗口控制(提高速度)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拥塞控制"><span class="nav-number">5.2.4.</span> <span class="nav-text">拥塞控制</span></a></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/uploads/kevin.JPG"
+      alt="郝文璇">
+  <p class="site-author-name" itemprop="name">郝文璇</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wenxuan-hao</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

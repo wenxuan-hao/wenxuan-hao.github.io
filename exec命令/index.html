@@ -55,23 +55,21 @@
   };
 </script>
 
-  <meta name="description" content="介绍在分布式环境下，特别是微服务结构的分布式系统中， 一个软件系统调用另外一个远程系统是非常普遍的。这种远程调用的被调用方可能是另外一个进程，或者是跨网路的另外一台主机, 这种远程的调用和进程的内部调用最大的区别是，远程调用可能会失败，或者挂起而没有任何回应，直到超时。更坏的情况是， 如果有多个调用者对同一个挂起的服务进行调用，那么就很有可能的是一个服务的超时等待迅速蔓延到整个分布式系统，引起连锁">
-<meta name="keywords" content="设计模式">
+  <meta name="description" content="execexec共有三种用法     执行程序   文件重定向  当做find命令的一个选项">
+<meta name="keywords" content="linux,exec命令">
 <meta property="og:type" content="article">
-<meta property="og:title" content="断路器模式">
-<meta property="og:url" content="https://wenxuan-hao.github.io/断路器模式/index.html">
+<meta property="og:title" content="exec命令">
+<meta property="og:url" content="https://wenxuan-hao.github.io/exec命令/index.html">
 <meta property="og:site_name" content="Sparkle">
-<meta property="og:description" content="介绍在分布式环境下，特别是微服务结构的分布式系统中， 一个软件系统调用另外一个远程系统是非常普遍的。这种远程调用的被调用方可能是另外一个进程，或者是跨网路的另外一台主机, 这种远程的调用和进程的内部调用最大的区别是，远程调用可能会失败，或者挂起而没有任何回应，直到超时。更坏的情况是， 如果有多个调用者对同一个挂起的服务进行调用，那么就很有可能的是一个服务的超时等待迅速蔓延到整个分布式系统，引起连锁">
+<meta property="og:description" content="execexec共有三种用法     执行程序   文件重定向  当做find命令的一个选项">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j1tljdaj30fi0oitb7.jpg">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/9/27/16d702629b61cbcc?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j2e5djbj30ci0bajrv.jpg">
-<meta property="og:updated_time" content="2020-02-24T11:40:36.264Z">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1gafq1co6m8j307h01daa2.jpg">
+<meta property="og:updated_time" content="2020-02-09T08:02:33.316Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="断路器模式">
-<meta name="twitter:description" content="介绍在分布式环境下，特别是微服务结构的分布式系统中， 一个软件系统调用另外一个远程系统是非常普遍的。这种远程调用的被调用方可能是另外一个进程，或者是跨网路的另外一台主机, 这种远程的调用和进程的内部调用最大的区别是，远程调用可能会失败，或者挂起而没有任何回应，直到超时。更坏的情况是， 如果有多个调用者对同一个挂起的服务进行调用，那么就很有可能的是一个服务的超时等待迅速蔓延到整个分布式系统，引起连锁">
-<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j1tljdaj30fi0oitb7.jpg">
-  <link rel="canonical" href="https://wenxuan-hao.github.io/断路器模式/">
+<meta name="twitter:title" content="exec命令">
+<meta name="twitter:description" content="execexec共有三种用法     执行程序   文件重定向  当做find命令的一个选项">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1gafq1co6m8j307h01daa2.jpg">
+  <link rel="canonical" href="https://wenxuan-hao.github.io/exec命令/">
 
 
 <script id="page-configurations">
@@ -85,7 +83,7 @@
   };
 </script>
 
-  <title>断路器模式 | Sparkle</title>
+  <title>exec命令 | Sparkle</title>
   
 
 
@@ -235,7 +233,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/断路器模式/">
+    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/exec命令/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郝文璇">
@@ -247,7 +245,7 @@
       <meta itemprop="name" content="Sparkle">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">断路器模式
+        <h1 class="post-title" itemprop="name headline">exec命令
 
           
         </h1>
@@ -263,7 +261,7 @@
                 
               
 
-              <time title="Created: 2019-12-22 23:34:05" itemprop="dateCreated datePublished" datetime="2019-12-22T23:34:05+08:00">2019-12-22</time>
+              <time title="Created: 2019-12-31 10:56:02" itemprop="dateCreated datePublished" datetime="2019-12-31T10:56:02+08:00">2019-12-31</time>
             </span>
           
             
@@ -274,7 +272,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-24 19:40:36" itemprop="dateModified" datetime="2020-02-24T19:40:36+08:00">2020-02-24</time>
+                <time title="Modified: 2020-02-09 16:02:33" itemprop="dateModified" datetime="2020-02-09T16:02:33+08:00">2020-02-09</time>
               </span>
             
           
@@ -284,7 +282,7 @@
               </span>
               <span class="post-meta-item-text">In</span>
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/设计模式/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a></span>
 
                 
                 
@@ -303,18 +301,32 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>在分布式环境下，特别是微服务结构的分布式系统中， 一个软件系统调用另外一个远程系统是非常普遍的。这种远程调用的被调用方可能是另外一个进程，或者是跨网路的另外一台主机, 这种远程的调用和进程的内部调用最大的区别是，远程调用可能会失败，或者挂起而没有任何回应，直到超时。更坏的情况是， 如果有多个调用者对同一个挂起的服务进行调用，那么就很有可能的是一个服务的超时等待迅速蔓延到整个分布式系统，引起连锁反应， 从而消耗掉整个分布式系统大量资源。最终可能导致系统瘫痪。</p>
-<p>断路器（Circuit Breaker）模式就是为了防止在分布式系统中出现这种瀑布似的连锁反应导致的灾难。</p>
-<a id="more"></a>
-<p>一旦某个电器出问题，为了防止灾难，电路的保险丝就会熔断。断路器类似于电路的保险丝， 实现思路非常简单，可以将需要保护的远程服务嗲用封装起来，在内部监听失败次数， 一旦失败次数达到某阀值后，所有后续对该服务的调用，断路器截获后都直接返回错误到调用方，而不会继续调用已经出问题的服务， 从而达到保护调用方的目的, 整个系统也就不会出现因为超时而产生的瀑布式连锁反应。</p>
-<h3 id="基本模式"><a href="#基本模式" class="headerlink" title="基本模式"></a>基本模式</h3><p>当supplier可用时, 断路器会直接返回调用结果给client端; 多次重试后达到重试阈值, 断路器会从close模式转为open模式, 再次调用相同的服务, 断路器会直接返回错误.</p>
-<p><img src="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j1tljdaj30fi0oitb7.jpg" alt></p>
-<p><img src="https://user-gold-cdn.xitu.io/2019/9/27/16d702629b61cbcc?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt></p>
-<h3 id="扩展模式"><a href="#扩展模式" class="headerlink" title="扩展模式"></a>扩展模式</h3><p>基本的断路器模式下，保证了断路器在open状态时，保护supplier不会被调用， 但我们还需要额外的措施可以在supplier恢复服务后，可以重置断路器。一种可行的办法是断路器定期探测supplier的服务是否恢复， 一但恢复， 就将状态设置成close。断路器进行重试时的状态为半开（half-open）状态。<br><img src="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j2e5djbj30ci0bajrv.jpg" alt></p>
-<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><p>一个supplier一般很稳定，如果一旦故障发生后， 检查和恢复需要的时间比较长，通常无法短时间内快速修复的，那么这种服务比较适合采用断路器模式。否则很可能导致ping-pong效应。</p>
-<h3 id="不适用场景"><a href="#不适用场景" class="headerlink" title="不适用场景"></a>不适用场景</h3><p>为了防止一个应用程序试图调用一个远程服务或访问共享资源，如果​​该操作是极有可能失败， 这种模式可能不适合。 </p>
-<p>对于处理中的应用程序访问本地专用资源，例如在存储器内数据结构。在这种环境下通常也不适合，使用断路器只会增加系统开销。 </p>
-<h3 id="golang版实现"><a href="#golang版实现" class="headerlink" title="golang版实现"></a>golang版实现</h3>
+        <h2 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h2><p>exec共有三种用法   </p>
+<ol>
+<li>执行程序  </li>
+<li>文件重定向 </li>
+<li>当做find命令的一个选项  <a id="more"></a>
+<h4 id="执行命令"><a href="#执行命令" class="headerlink" title="执行命令"></a>执行命令</h4>系统调用exec是以新的进程去代替原来的进程，但进程的PID保持不变。因此，可以这样认为，exec系统调用并没有创建新的进程，只是替换了原来进程上下文的内容。原进程的代码段，数据段，堆栈段被新的进程所代替。即: 使用exec执行命令, 将不会启动新的shell, 而是用被执行命令替代当前shell进程, 命令执行结束后, shell退出.<br>常用场景:  </li>
+</ol>
+<ul>
+<li>我们一般将exec写在脚本中, bash执行该脚本; 这样会为该脚本创建一个sub shell去执行, 当执行到exec时, 该子脚本进程就会替换为相应的exec命令.   </li>
+<li>执行exec系统调用，一般都是这样，用fork()函数新建立一个进程，然后让进程去执行exec调用。我们知道，在fork()建立新进程之后，父进各与子进程共享代码段，但数据空间是分开的，但父进程会把自己数据空间的内容copy到子进程中去，还有上下文也会copy到子进程中去。而为了提高效率，采用一种写时copy的策略，即创建子进程的时候，并不copy父进程的地址空间，父子进程拥有共同的地址空间，只有当子进程需要写入数据时(如向缓冲区写入数据),这时候会复制地址空间，复制缓冲区到子进程中去。从而父子进程拥有独立的地址空间。而对于fork()之后执行exec后，这种策略能够很好的提高效率，如果一开始就copy,那么exec之后，子进程的数据会被放弃，被新的进程所代替。  </li>
+</ul>
+<blockquote>
+<p>bash source . 都可以执行脚本, 区别在于source和.不会为脚本新建shell, 而是在当前shell中执行;  </p>
+</blockquote>
+<h4 id="文件重定向"><a href="#文件重定向" class="headerlink" title="文件重定向"></a>文件重定向</h4><p>我们先看一下/dev/fd目录:<br><img src="https://tva1.sinaimg.cn/large/006tNbRwly1gafq1co6m8j307h01daa2.jpg" alt="/dev/fd"><br>默认会有这四个项：  </p>
+<ul>
+<li>0是标准输入，默认是键盘。 stdin  </li>
+<li>1是标准输出，默认是屏幕/dev/tty stdout  </li>
+<li>2是标准错误，默认也是屏幕 stderr  </li>
+</ul>
+<p>例子:  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">exec &gt;file     //将当前shell的标准输出到file文件中, 因为&gt;默认为1</span><br><span class="line">exec 4&gt;file    //将写入fd4中的内容写入file中</span><br><span class="line">exec 5&lt;&amp;4      //创建fd4的拷贝fd5</span><br><span class="line">exec 3&lt;&amp;-      //关闭fd3</span><br></pre></td></tr></table></figure>
+
+<h4 id="find命令"><a href="#find命令" class="headerlink" title="find命令"></a>find命令</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 在当前目录下(包含子目录)，查找所有txt文件并找出含有字符串&quot;bin&quot;的行 </span><br><span class="line">find ./ -name &quot;*.txt&quot; -exec grep &quot;bin&quot; &#123;&#125; \; </span><br><span class="line">// 在当前目录下(包含子目录)，删除所有txt文件 </span><br><span class="line">find ./ -name &quot;*.txt&quot; -exec rm &#123;&#125; \;</span><br></pre></td></tr></table></figure>
+
+
     </div>
 
     
@@ -329,7 +341,9 @@
           
           <div class="post-tags">
             
-              <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
+              <a href="/tags/linux/" rel="tag"># linux</a>
+            
+              <a href="/tags/exec命令/" rel="tag"># exec命令</a>
             
           </div>
         
@@ -339,14 +353,18 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
+                <a href="/软硬链接/" rel="next" title="软链接/硬链接">
+                  <i class="fa fa-chevron-left"></i> 软链接/硬链接
+                </a>
+              
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
               
-                <a href="/计算机网路基础回顾/" rel="prev" title="计算机网路基础回顾">
-                  计算机网路基础回顾 <i class="fa fa-chevron-right"></i>
+                <a href="/网络相关的linux命令/" rel="prev" title="网络相关的linux命令">
+                  网络相关的linux命令 <i class="fa fa-chevron-right"></i>
                 </a>
               
             </div>
@@ -396,7 +414,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本模式"><span class="nav-number">2.</span> <span class="nav-text">基本模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展模式"><span class="nav-number">3.</span> <span class="nav-text">扩展模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用场景"><span class="nav-number">4.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不适用场景"><span class="nav-number">5.</span> <span class="nav-text">不适用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#golang版实现"><span class="nav-number">6.</span> <span class="nav-text">golang版实现</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#exec"><span class="nav-number">1.</span> <span class="nav-text">exec</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->

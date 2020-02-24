@@ -55,23 +55,22 @@
   };
 </script>
 
-  <meta name="description" content="介绍在分布式环境下，特别是微服务结构的分布式系统中， 一个软件系统调用另外一个远程系统是非常普遍的。这种远程调用的被调用方可能是另外一个进程，或者是跨网路的另外一台主机, 这种远程的调用和进程的内部调用最大的区别是，远程调用可能会失败，或者挂起而没有任何回应，直到超时。更坏的情况是， 如果有多个调用者对同一个挂起的服务进行调用，那么就很有可能的是一个服务的超时等待迅速蔓延到整个分布式系统，引起连锁">
-<meta name="keywords" content="设计模式">
+  <meta name="description" content="inode文件都有文件名与数据，这在 Linux 上被分成两个部分：用户数据 (user data) 与元数据 (metadata)。用户数据，即文件数据块 (data block)，数据块是记录文件真实内容的地方；而元数据则是文件的附加属性，如文件大小、创建时间、所有者等信息。在 Linux 中，元数据中的 inode 号（inode 是文件元数据的一部分但其并不包含文件名，inode 号即索引">
+<meta name="keywords" content="linux,文件系统">
 <meta property="og:type" content="article">
-<meta property="og:title" content="断路器模式">
-<meta property="og:url" content="https://wenxuan-hao.github.io/断路器模式/index.html">
+<meta property="og:title" content="软链接&#x2F;硬链接">
+<meta property="og:url" content="https://wenxuan-hao.github.io/软硬链接/index.html">
 <meta property="og:site_name" content="Sparkle">
-<meta property="og:description" content="介绍在分布式环境下，特别是微服务结构的分布式系统中， 一个软件系统调用另外一个远程系统是非常普遍的。这种远程调用的被调用方可能是另外一个进程，或者是跨网路的另外一台主机, 这种远程的调用和进程的内部调用最大的区别是，远程调用可能会失败，或者挂起而没有任何回应，直到超时。更坏的情况是， 如果有多个调用者对同一个挂起的服务进行调用，那么就很有可能的是一个服务的超时等待迅速蔓延到整个分布式系统，引起连锁">
+<meta property="og:description" content="inode文件都有文件名与数据，这在 Linux 上被分成两个部分：用户数据 (user data) 与元数据 (metadata)。用户数据，即文件数据块 (data block)，数据块是记录文件真实内容的地方；而元数据则是文件的附加属性，如文件大小、创建时间、所有者等信息。在 Linux 中，元数据中的 inode 号（inode 是文件元数据的一部分但其并不包含文件名，inode 号即索引">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j1tljdaj30fi0oitb7.jpg">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/9/27/16d702629b61cbcc?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j2e5djbj30ci0bajrv.jpg">
-<meta property="og:updated_time" content="2020-02-24T11:40:36.264Z">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1ga7mm43efdj308w03c3yl.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1ga7n7ret6qj306804ojrj.jpg">
+<meta property="og:updated_time" content="2020-02-09T08:03:23.431Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="断路器模式">
-<meta name="twitter:description" content="介绍在分布式环境下，特别是微服务结构的分布式系统中， 一个软件系统调用另外一个远程系统是非常普遍的。这种远程调用的被调用方可能是另外一个进程，或者是跨网路的另外一台主机, 这种远程的调用和进程的内部调用最大的区别是，远程调用可能会失败，或者挂起而没有任何回应，直到超时。更坏的情况是， 如果有多个调用者对同一个挂起的服务进行调用，那么就很有可能的是一个服务的超时等待迅速蔓延到整个分布式系统，引起连锁">
-<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j1tljdaj30fi0oitb7.jpg">
-  <link rel="canonical" href="https://wenxuan-hao.github.io/断路器模式/">
+<meta name="twitter:title" content="软链接&#x2F;硬链接">
+<meta name="twitter:description" content="inode文件都有文件名与数据，这在 Linux 上被分成两个部分：用户数据 (user data) 与元数据 (metadata)。用户数据，即文件数据块 (data block)，数据块是记录文件真实内容的地方；而元数据则是文件的附加属性，如文件大小、创建时间、所有者等信息。在 Linux 中，元数据中的 inode 号（inode 是文件元数据的一部分但其并不包含文件名，inode 号即索引">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1ga7mm43efdj308w03c3yl.jpg">
+  <link rel="canonical" href="https://wenxuan-hao.github.io/软硬链接/">
 
 
 <script id="page-configurations">
@@ -85,7 +84,7 @@
   };
 </script>
 
-  <title>断路器模式 | Sparkle</title>
+  <title>软链接/硬链接 | Sparkle</title>
   
 
 
@@ -235,7 +234,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/断路器模式/">
+    <link itemprop="mainEntityOfPage" href="https://wenxuan-hao.github.io/软硬链接/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郝文璇">
@@ -247,7 +246,7 @@
       <meta itemprop="name" content="Sparkle">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">断路器模式
+        <h1 class="post-title" itemprop="name headline">软链接/硬链接
 
           
         </h1>
@@ -263,7 +262,7 @@
                 
               
 
-              <time title="Created: 2019-12-22 23:34:05" itemprop="dateCreated datePublished" datetime="2019-12-22T23:34:05+08:00">2019-12-22</time>
+              <time title="Created: 2019-12-24 10:56:02" itemprop="dateCreated datePublished" datetime="2019-12-24T10:56:02+08:00">2019-12-24</time>
             </span>
           
             
@@ -274,7 +273,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-24 19:40:36" itemprop="dateModified" datetime="2020-02-24T19:40:36+08:00">2020-02-24</time>
+                <time title="Modified: 2020-02-09 16:03:23" itemprop="dateModified" datetime="2020-02-09T16:03:23+08:00">2020-02-09</time>
               </span>
             
           
@@ -284,7 +283,7 @@
               </span>
               <span class="post-meta-item-text">In</span>
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/设计模式/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a></span>
 
                 
                 
@@ -303,18 +302,38 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>在分布式环境下，特别是微服务结构的分布式系统中， 一个软件系统调用另外一个远程系统是非常普遍的。这种远程调用的被调用方可能是另外一个进程，或者是跨网路的另外一台主机, 这种远程的调用和进程的内部调用最大的区别是，远程调用可能会失败，或者挂起而没有任何回应，直到超时。更坏的情况是， 如果有多个调用者对同一个挂起的服务进行调用，那么就很有可能的是一个服务的超时等待迅速蔓延到整个分布式系统，引起连锁反应， 从而消耗掉整个分布式系统大量资源。最终可能导致系统瘫痪。</p>
-<p>断路器（Circuit Breaker）模式就是为了防止在分布式系统中出现这种瀑布似的连锁反应导致的灾难。</p>
-<a id="more"></a>
-<p>一旦某个电器出问题，为了防止灾难，电路的保险丝就会熔断。断路器类似于电路的保险丝， 实现思路非常简单，可以将需要保护的远程服务嗲用封装起来，在内部监听失败次数， 一旦失败次数达到某阀值后，所有后续对该服务的调用，断路器截获后都直接返回错误到调用方，而不会继续调用已经出问题的服务， 从而达到保护调用方的目的, 整个系统也就不会出现因为超时而产生的瀑布式连锁反应。</p>
-<h3 id="基本模式"><a href="#基本模式" class="headerlink" title="基本模式"></a>基本模式</h3><p>当supplier可用时, 断路器会直接返回调用结果给client端; 多次重试后达到重试阈值, 断路器会从close模式转为open模式, 再次调用相同的服务, 断路器会直接返回错误.</p>
-<p><img src="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j1tljdaj30fi0oitb7.jpg" alt></p>
-<p><img src="https://user-gold-cdn.xitu.io/2019/9/27/16d702629b61cbcc?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt></p>
-<h3 id="扩展模式"><a href="#扩展模式" class="headerlink" title="扩展模式"></a>扩展模式</h3><p>基本的断路器模式下，保证了断路器在open状态时，保护supplier不会被调用， 但我们还需要额外的措施可以在supplier恢复服务后，可以重置断路器。一种可行的办法是断路器定期探测supplier的服务是否恢复， 一但恢复， 就将状态设置成close。断路器进行重试时的状态为半开（half-open）状态。<br><img src="https://tva1.sinaimg.cn/large/006tNbRwly1ga6j2e5djbj30ci0bajrv.jpg" alt></p>
-<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><p>一个supplier一般很稳定，如果一旦故障发生后， 检查和恢复需要的时间比较长，通常无法短时间内快速修复的，那么这种服务比较适合采用断路器模式。否则很可能导致ping-pong效应。</p>
-<h3 id="不适用场景"><a href="#不适用场景" class="headerlink" title="不适用场景"></a>不适用场景</h3><p>为了防止一个应用程序试图调用一个远程服务或访问共享资源，如果​​该操作是极有可能失败， 这种模式可能不适合。 </p>
-<p>对于处理中的应用程序访问本地专用资源，例如在存储器内数据结构。在这种环境下通常也不适合，使用断路器只会增加系统开销。 </p>
-<h3 id="golang版实现"><a href="#golang版实现" class="headerlink" title="golang版实现"></a>golang版实现</h3>
+        <a id="more"></a><h2 id="inode"><a href="#inode" class="headerlink" title="inode"></a>inode</h2><p>文件都有文件名与数据，这在 Linux 上被分成两个部分：用户数据 (user data) 与元数据 (metadata)。用户数据，即文件数据块 (data block)，数据块是记录文件真实内容的地方；而元数据则是文件的附加属性，如文件大小、创建时间、所有者等信息。在 Linux 中，元数据中的 inode 号（inode 是文件元数据的一部分但其并不包含文件名，inode 号即索引节点号）才是文件的唯一标识而非文件名。文件名仅是为了方便人们的记忆和使用，系统或程序通过 inode 号寻找正确的文件数据块。图 1.展示了程序通过文件名获取文件内容的过程.<br> <code>ls -i 查看inode号</code></p><a id="more"></a>
+
+<p><img src="https://tva1.sinaimg.cn/large/006tNbRwly1ga7mm43efdj308w03c3yl.jpg" alt="inode示意"></p>
+<p><img src="https://tva1.sinaimg.cn/large/006tNbRwly1ga7n7ret6qj306804ojrj.jpg" alt="硬/软链接"></p>
+<h2 id="硬链接"><a href="#硬链接" class="headerlink" title="硬链接"></a>硬链接</h2><p>硬链接是有着相同 inode 号仅文件名不同的文件，因此硬链接存在以下几点特性:  </p>
+<ul>
+<li>文件有相同的 inode 及 data block； </li>
+<li>只能对已存在的文件进行创建；</li>
+<li>不能交叉文件系统进行硬链接的创建；</li>
+<li>不能对目录进行创建，只可对文件创建；</li>
+<li>删除一个硬链接文件并不影响其他有相同 inode 号的文件。  </li>
+</ul>
+<p>命令:   </p>
+<p><code>ln oldfile newfile</code></p>
+<h2 id="软连接"><a href="#软连接" class="headerlink" title="软连接"></a>软连接</h2><p>软链接与硬链接不同，若文件用户数据块中存放的内容是另一文件的路径名的指向，则该文件就是软连接。软链接就是一个普通文件，只是数据块内容有点特殊。软链接有着自己的 inode 号以及用户数据块（见 图 2.）。因此软链接的创建与使用没有类似硬链接的诸多限制：</p>
+<ul>
+<li>软链接有自己的文件属性及权限等； </li>
+<li>可对不存在的文件或目录创建软链接；</li>
+<li>软链接可交叉文件系统；</li>
+<li>软链接可对文件或目录创建；</li>
+<li>创建软链接时，链接计数 i_nlink 不会增加；</li>
+<li>删除软链接并不影响被指向的文件，但若被指向的原文件被删除，则相关软连接被称为死链接（即 dangling link，若被指向路径文件被重新创建，死链接可恢复为正常的软链接）。  </li>
+</ul>
+<p>命令:</p>
+<p><code>ln -s oldfile newfile</code></p>
+<h5 id="相关命令"><a href="#相关命令" class="headerlink" title="相关命令"></a>相关命令</h5><ul>
+<li>查找某文件的所有软连接 <code>find dir -lname filename</code></li>
+<li>查找与某文件有相同inode的所有硬链接 <code>find dir -samefile filename</code></li>
+<li>查找某一inode的所有硬链接 <code>find dir -inum inode</code></li>
+<li>查看某一目录的所有连接文件 <code>find dir -type -l -ls</code>   //-ls为查看文件具体信息</li>
+</ul>
+
     </div>
 
     
@@ -329,7 +348,9 @@
           
           <div class="post-tags">
             
-              <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
+              <a href="/tags/linux/" rel="tag"># linux</a>
+            
+              <a href="/tags/文件系统/" rel="tag"># 文件系统</a>
             
           </div>
         
@@ -339,14 +360,18 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
+                <a href="/计算机网路基础回顾/" rel="next" title="计算机网路基础回顾">
+                  <i class="fa fa-chevron-left"></i> 计算机网路基础回顾
+                </a>
+              
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
               
-                <a href="/计算机网路基础回顾/" rel="prev" title="计算机网路基础回顾">
-                  计算机网路基础回顾 <i class="fa fa-chevron-right"></i>
+                <a href="/exec命令/" rel="prev" title="exec命令">
+                  exec命令 <i class="fa fa-chevron-right"></i>
                 </a>
               
             </div>
@@ -396,7 +421,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本模式"><span class="nav-number">2.</span> <span class="nav-text">基本模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展模式"><span class="nav-number">3.</span> <span class="nav-text">扩展模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用场景"><span class="nav-number">4.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不适用场景"><span class="nav-number">5.</span> <span class="nav-text">不适用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#golang版实现"><span class="nav-number">6.</span> <span class="nav-text">golang版实现</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#inode"><span class="nav-number">1.</span> <span class="nav-text">inode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#硬链接"><span class="nav-number">2.</span> <span class="nav-text">硬链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#软连接"><span class="nav-number">3.</span> <span class="nav-text">软连接</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
