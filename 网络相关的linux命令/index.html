@@ -55,19 +55,19 @@
   };
 </script>
 
-  <meta name="description" content="端口相关的命令查看对方端口是否打开 telnet ip port nc -v ip port  查看端口被什么进程占用 netstat -ap | grep :prot    netstat是基于Netstat这个命令行工具的指令，它可以用来查询系统上的网络套接字连接情况，包括tcp,udp以及Unix套接字；另外它还能列出路由表，接口状态和多播成员等信息。   lsof -n -P -i:por">
+  <meta name="description" content="telnet基于http的网络协议 检查端口是否可达, 发送http请求telnet ip port nc 检查端口是否可达   123nc -zv ip port -v 显示详情-z 不发送数据包, 三次握手后退出  发送http请求nc ip port  监听本地端口 nc -l -p 端口号  netstatnetstat是基于Netstat这个命令行工具的指令，它可以用来查询系统上的网络套">
 <meta name="keywords" content="linux,网络">
 <meta property="og:type" content="article">
 <meta property="og:title" content="网络相关的linux命令">
 <meta property="og:url" content="https://wenxuan-hao.github.io/网络相关的linux命令/index.html">
 <meta property="og:site_name" content="Sparkle">
-<meta property="og:description" content="端口相关的命令查看对方端口是否打开 telnet ip port nc -v ip port  查看端口被什么进程占用 netstat -ap | grep :prot    netstat是基于Netstat这个命令行工具的指令，它可以用来查询系统上的网络套接字连接情况，包括tcp,udp以及Unix套接字；另外它还能列出路由表，接口状态和多播成员等信息。   lsof -n -P -i:por">
+<meta property="og:description" content="telnet基于http的网络协议 检查端口是否可达, 发送http请求telnet ip port nc 检查端口是否可达   123nc -zv ip port -v 显示详情-z 不发送数据包, 三次握手后退出  发送http请求nc ip port  监听本地端口 nc -l -p 端口号  netstatnetstat是基于Netstat这个命令行工具的指令，它可以用来查询系统上的网络套">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/0082zybply1gbu09woe8kj30ox0cr0ut.jpg">
-<meta property="og:updated_time" content="2020-02-15T10:05:04.140Z">
+<meta property="og:updated_time" content="2020-03-01T13:18:29.504Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="网络相关的linux命令">
-<meta name="twitter:description" content="端口相关的命令查看对方端口是否打开 telnet ip port nc -v ip port  查看端口被什么进程占用 netstat -ap | grep :prot    netstat是基于Netstat这个命令行工具的指令，它可以用来查询系统上的网络套接字连接情况，包括tcp,udp以及Unix套接字；另外它还能列出路由表，接口状态和多播成员等信息。   lsof -n -P -i:por">
+<meta name="twitter:description" content="telnet基于http的网络协议 检查端口是否可达, 发送http请求telnet ip port nc 检查端口是否可达   123nc -zv ip port -v 显示详情-z 不发送数据包, 三次握手后退出  发送http请求nc ip port  监听本地端口 nc -l -p 端口号  netstatnetstat是基于Netstat这个命令行工具的指令，它可以用来查询系统上的网络套">
 <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/0082zybply1gbu09woe8kj30ox0cr0ut.jpg">
   <link rel="canonical" href="https://wenxuan-hao.github.io/网络相关的linux命令/">
 
@@ -272,7 +272,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-15 18:05:04" itemprop="dateModified" datetime="2020-02-15T18:05:04+08:00">2020-02-15</time>
+                <time title="Modified: 2020-03-01 21:18:29" itemprop="dateModified" datetime="2020-03-01T21:18:29+08:00">2020-03-01</time>
               </span>
             
           
@@ -301,26 +301,28 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="端口相关的命令"><a href="#端口相关的命令" class="headerlink" title="端口相关的命令"></a>端口相关的命令</h2><h3 id="查看对方端口是否打开"><a href="#查看对方端口是否打开" class="headerlink" title="查看对方端口是否打开"></a>查看对方端口是否打开</h3><ul>
-<li>telnet ip port</li>
-<li>nc -v ip port</li>
-</ul>
-<h3 id="查看端口被什么进程占用"><a href="#查看端口被什么进程占用" class="headerlink" title="查看端口被什么进程占用"></a>查看端口被什么进程占用</h3><ul>
-<li><p>netstat -ap | grep :prot<br><img src="https://tva1.sinaimg.cn/large/0082zybply1gbu09woe8kj30ox0cr0ut.jpg" alt="netstat">  </p>
-<blockquote>
-<p>netstat是基于Netstat这个命令行工具的指令，它可以用来查询系统上的网络套接字连接情况，包括tcp,udp以及Unix套接字；另外它还能列出路由表，接口状态和多播成员等信息。</p>
-</blockquote>
+        <h2 id="telnet"><a href="#telnet" class="headerlink" title="telnet"></a>telnet</h2><p>基于http的网络协议</p><ul>
+<li><p>检查端口是否可达, 发送http请求<br><code>telnet ip port</code></p>
+<h2 id="nc"><a href="#nc" class="headerlink" title="nc"></a>nc</h2></li>
+<li><p>检查端口是否可达  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nc -zv ip port </span><br><span class="line">-v 显示详情</span><br><span class="line">-z 不发送数据包, 三次握手后退出</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>lsof -n -P -i:port</p>
-<blockquote>
-<p>lsof(list open files)是一个列出当前系统打开文件的工具。在linux环境下，任何事物都以文件的形式存在，通过文件不仅仅可以访问常规数据，还可以访问网络连接和硬件。所以如传输控制协议 (TCP) 和用户数据报协议 (UDP) 套接字等，系统在后台都为该应用程序分配了一个文件描述符，无论这个文件的本质如何，该文件描述符为应用程序与基础操作系统之间的交互提供了通用接口。因为应用程序打开文件的描述符列表提供了大量关于这个应用程序本身的信息，因此通过lsof工具能够查看这个列表对系统监测以及排错将是很有帮助的。</p>
-</blockquote>
+<li><p>发送http请求<br><code>nc ip port</code></p>
+</li>
+<li><p>监听本地端口 <code>nc -l -p 端口号</code></p>
+</li>
+</ul><h2 id="netstat"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</h2><p>netstat是基于Netstat这个命令行工具的指令，它可以用来查询系统上的网络套接字连接情况，包括tcp,udp以及Unix套接字；另外它还能列出路由表，接口状态和多播成员等信息。<br><img src="https://tva1.sinaimg.cn/large/0082zybply1gbu09woe8kj30ox0cr0ut.jpg" alt="netstat"> </p><a id="more"></a>
+
+
 <ul>
-<li>-n 不将ip解析为域名</li>
-<li>-P 不将port解析为service name</li>
-<li>-i:port 指定端口</li>
+<li>检查端口占用<br><code>netstat -ap | grep :prot</code> </li>
+<li>列出网卡信息<br><code>netstat -i</code></li>
+<li>显示 8080 端口所有处于 ESTABLISHED 状态的连接<br><code>netstat -atnp | grep &quot;:8080&quot; | grep ESTABLISHED</code></li>
+<li>统计处于各个状态的连接个数<br><code>netstat -ant | awk &#39;{print $6}&#39; | sort | uniq -c | sort -n</code></li>
 </ul>
-</li>
+<h2 id="lsof"><a href="#lsof" class="headerlink" title="lsof"></a>lsof</h2><p>lsof(list open files)是一个列出当前系统打开文件的工具。在linux环境下，任何事物都以文件的形式存在，通过文件不仅仅可以访问常规数据，还可以访问网络连接和硬件。所以如传输控制协议 (TCP) 和用户数据报协议 (UDP) 套接字等，系统在后台都为该应用程序分配了一个文件描述符，无论这个文件的本质如何，该文件描述符为应用程序与基础操作系统之间的交互提供了通用接口。因为应用程序打开文件的描述符列表提供了大量关于这个应用程序本身的信息，因此通过lsof工具能够查看这个列表对系统监测以及排错将是很有帮助的。</p>
+<ul>
+<li>检查端口占用  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lsof -n -P -i:port  </span><br><span class="line">-n 不将ip解析为域名</span><br><span class="line">-P 不将port解析为service name</span><br><span class="line">-i:port 指定端口</span><br></pre></td></tr></table></figure></li>
 </ul>
 
     </div>
@@ -410,7 +412,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#端口相关的命令"><span class="nav-number">1.</span> <span class="nav-text">端口相关的命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看对方端口是否打开"><span class="nav-number">1.1.</span> <span class="nav-text">查看对方端口是否打开</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看端口被什么进程占用"><span class="nav-number">1.2.</span> <span class="nav-text">查看端口被什么进程占用</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#telnet"><span class="nav-number">1.</span> <span class="nav-text">telnet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nc"><span class="nav-number">2.</span> <span class="nav-text">nc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#netstat"><span class="nav-number">3.</span> <span class="nav-text">netstat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lsof"><span class="nav-number">4.</span> <span class="nav-text">lsof</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
